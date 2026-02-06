@@ -15,10 +15,25 @@
         android:theme="@style/Theme.EscolaBoaParaCachorro"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
+            android:name=".EsqueceuASenha"
+            android:exported="false" />
+        <activity
+            android:name=".Cadastro"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".Opcoes"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -27,6 +42,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
