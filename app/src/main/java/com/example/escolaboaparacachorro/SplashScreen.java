@@ -23,7 +23,7 @@ public class SplashScreen extends AppCompatActivity {
             return insets;
         });
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreen.this, Opcoes.class);
+            Intent intent = new Intent(SplashScreen.this, Login.class);
             startActivity(intent);
             finish();
         }, 2000);

@@ -18,13 +18,7 @@
             android:name=".EsqueceuASenha"
             android:exported="false" />
         <activity
-            android:name=".Cadastro"
-            android:exported="false" />
-        <activity
             android:name=".Login"
-            android:exported="false" />
-        <activity
-            android:name=".Opcoes"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
