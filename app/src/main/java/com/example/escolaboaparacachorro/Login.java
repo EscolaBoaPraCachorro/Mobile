@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -43,6 +44,7 @@ public class Login extends AppCompatActivity {
         bt_confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //direcionar aqui para tela inicial, quando existir
 //                Intent intent = new Intent();
 //                intent.putExtra("Email", email);
 //                intent.putExtra("Senha", senha);
