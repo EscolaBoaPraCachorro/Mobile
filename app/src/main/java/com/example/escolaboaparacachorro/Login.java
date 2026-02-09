@@ -1,11 +1,13 @@
 package com.example.escolaboaparacachorro;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,11 +46,18 @@ public class Login extends AppCompatActivity {
         bt_confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //direcionar aqui para tela inicial, quando existir
-//                Intent intent = new Intent();
-//                intent.putExtra("Email", email);
-//                intent.putExtra("Senha", senha);
-//                startActivity(intent);
+
+                if(!email.getText().toString().isEmpty()&&!senha.getText().toString().isEmpty()){
+                    //direcionar aqui para tela inicial, quando existir
+                    //além disso, adicionar verificação se o user existe no banco de dados
+//                  Intent intent = new Intent();
+//                  intent.putExtra("Email", email);
+//                  intent.putExtra("Senha", senha);
+//                  startActivity(intent);
+                }
+                else{
+                    Toast.makeText(Login.this, "preencha todos os campos", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
