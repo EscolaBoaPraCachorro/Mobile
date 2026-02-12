@@ -1,11 +1,9 @@
 package com.example.escolaboaparacachorro;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
-
-import org.w3c.dom.Text;
 
 public class Login extends AppCompatActivity {
 
@@ -48,12 +44,11 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(!email.getText().toString().isEmpty()&&!senha.getText().toString().isEmpty()){
-                    //direcionar aqui para tela inicial, quando existir
-                    //além disso, adicionar verificação se o user existe no banco de dados
-//                  Intent intent = new Intent();
-//                  intent.putExtra("Email", email);
-//                  intent.putExtra("Senha", senha);
-//                  startActivity(intent);
+                  //adicionar verificação se o user existe no banco de dados
+                  Intent intent = new Intent(Login.this, MainActivity.class);
+                  intent.putExtra("Email", email.getText().toString());
+                  intent.putExtra("Senha", senha.getText().toString());
+                  startActivity(intent);
                 }
                 else{
                     Toast.makeText(Login.this, "preencha todos os campos", Toast.LENGTH_LONG).show();
