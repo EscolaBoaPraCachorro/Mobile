@@ -7,8 +7,8 @@
     android:background="#4232B2"
     tools:context=".ui.notifications.NotificationsFragment" >
 
-    <ImageView
-        android:id="@+id/imageView6"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/perfil"
         android:layout_width="79dp"
         android:layout_height="75dp"
         android:layout_marginTop="16dp"
@@ -18,8 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ImagemRedonda"
-        app:strokeColor="@color/black"
-        app:strokeWidth="2dp"
+        app:strokeColor="@color/white"
+        app:strokeWidth="3dp"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -31,12 +31,13 @@
         android:text="AUmigos"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/perfil"
         app:layout_constraintHorizontal_bias="0.665"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAumigos"
         android:layout_width="409dp"
         android:layout_height="638dp"
         android:layout_marginStart="8dp"
