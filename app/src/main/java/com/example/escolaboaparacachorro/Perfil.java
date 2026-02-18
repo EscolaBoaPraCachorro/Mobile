@@ -37,7 +37,7 @@ public class Perfil extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnEditFoto = binding.editImg;
-        btnEditTexto = binding.editDescri;
+        btnEditTexto = binding.editDescr;
 
         Intent intent = getActivity().getIntent();
 

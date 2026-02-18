@@ -77,9 +77,6 @@ public class NotificationsFragment extends Fragment {
                 List<Cachorro> listaAumigos = response.body();
                 AumigosAdapter adapter = new AumigosAdapter(listaAumigos);
                 rv.setAdapter(adapter);
-
-
-
             }
 
             @Override
@@ -88,10 +85,6 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
-
-
-
-
     }
 
     @Override

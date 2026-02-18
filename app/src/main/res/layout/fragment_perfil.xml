@@ -266,7 +266,7 @@
             app:layout_constraintTop_toTopOf="@+id/view7" />
 
         <ImageView
-            android:id="@+id/imageView13"
+            android:id="@+id/editImg"
             android:layout_width="64dp"
             android:layout_height="53dp"
             android:layout_marginTop="40dp"
@@ -277,7 +277,7 @@
             app:layout_constraintTop_toTopOf="@+id/view" />
 
         <ImageView
-            android:id="@+id/imageView14"
+            android:id="@+id/editDescr"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginTop="52dp"
