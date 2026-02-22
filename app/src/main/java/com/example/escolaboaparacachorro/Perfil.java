@@ -1,6 +1,5 @@
 package com.example.escolaboaparacachorro;
 
-import static android.content.Intent.getIntent;
 
 import android.content.Intent;
 import android.os.Bundle;
