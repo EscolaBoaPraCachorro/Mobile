@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/notaN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -25,6 +25,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardViewNota"
             android:layout_width="107dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
@@ -33,7 +34,7 @@
             app:cardElevation="0dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/valorNota"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
