@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="@+id/view3">
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/nomeDisciplina"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/josefin_sans"
@@ -112,7 +112,7 @@
 
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/observacoes"
             android:layout_width="match_parent"
             android:layout_height="139dp"
             android:layout_marginTop="19dp"
