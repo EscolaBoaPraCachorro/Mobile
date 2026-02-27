@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dogChorando" />
+        app:srcCompat="@drawable/dogchorando" />
 
     <TextView
         android:id="@+id/suporteTxt"
@@ -53,6 +53,6 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/setaComeback" />
+        app:srcCompat="@drawable/setacomeback" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
