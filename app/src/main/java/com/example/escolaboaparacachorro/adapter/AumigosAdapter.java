@@ -3,6 +3,7 @@ package com.example.escolaboaparacachorro.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,16 @@ import java.util.List;
 public class AumigosAdapter extends RecyclerView.Adapter<AumigosAdapter.AumigosViewHolder>{
 
     private List<Cachorro> listaCachorros;
+    private OnItemClickListener listener;
+    public interface OnItemClickListener {
+        void onItemClick(Cachorro cachorro);
+    }
 
-    public AumigosAdapter(List<Cachorro> lista) {
+    public AumigosAdapter(List<Cachorro> lista, OnItemClickListener listener) {
         this.listaCachorros = lista;
+        this.listener = listener;
+
+
     }
 
     @NonNull
@@ -34,6 +42,10 @@ public class AumigosAdapter extends RecyclerView.Adapter<AumigosAdapter.AumigosV
     @Override
     public void onBindViewHolder(@NonNull AumigosViewHolder holder, int position) {
         Cachorro cachorro = listaCachorros.get(position);
+
+        holder.itemView.setOnClickListener(v -> {
+            listener.onItemClick(cachorro);
+        });
 
         holder.txtNome.setText(cachorro.getNome());
         holder.txtRacaSexo.setText(cachorro.getRaca() + "     " + cachorro.getSexo());
