@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detalhesDisciplina"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4232B2"
@@ -22,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/fotoProfessor"
         android:layout_width="100dp"
         android:layout_height="102dp"
         android:scaleType="centerCrop"
@@ -38,7 +39,7 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/voltar"
         android:layout_width="49dp"
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
@@ -99,7 +100,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card2"
         android:layout_width="381dp"
-        android:layout_height="161dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
@@ -112,7 +113,7 @@
 
 
         <TextView
-            android:id="@+id/observacoes"
+            android:id="@+id/idadeT"
             android:layout_width="match_parent"
             android:layout_height="139dp"
             android:layout_marginTop="19dp"

@@ -32,7 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    private ShapeableImageView perfil;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,9 +49,7 @@ public class NotificationsFragment extends Fragment {
 
         binding.perfil.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), Perfil.class);
-            String idDoMeuCachorro = "";
-            intent.putExtra("MODO_EDICAO", true); //é o cachorro do usuario
-            intent.putExtra("ID_PET", idDoMeuCachorro);
+            intent.putExtra("MODO_EDICAO", true);
 
             startActivity(intent);
         });
@@ -67,13 +64,21 @@ public class NotificationsFragment extends Fragment {
 
         ApiPostgres apiPostgres = retrofit.create(ApiPostgres.class);
 
-        Call<List<Cachorro>> call = apiPostgres.getCachorros();
+        Call<List<Cachorro>> call = apiPostgres.listarCachorros();
 
         call.enqueue(new Callback<List<Cachorro>>() {
             @Override
             public void onResponse(Call<List<Cachorro>> call, Response<List<Cachorro>> response) {
                 List<Cachorro> listaAumigos = response.body();
-                AumigosAdapter adapter = new AumigosAdapter(listaAumigos);
+                AumigosAdapter adapter = new AumigosAdapter(listaAumigos, cachorro -> {
+
+                    // Lógica para abrir a nova tela
+                    Intent intent = new Intent(requireContext(), Perfil.class);
+                    intent.putExtra("ID_PET", cachorro.getId());
+                    intent.putExtra("MODO_EDICAO", false);
+
+                    startActivity(intent);
+                });
                 rv.setAdapter(adapter);
             }
 

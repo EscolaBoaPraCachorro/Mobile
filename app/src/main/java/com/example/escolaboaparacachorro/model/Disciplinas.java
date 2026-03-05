@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Disciplinas {
 
-    private Integer id;
+    private Long id;
 
-    @SerializedName("id_cachorro")
-    private Integer idCachorro;
+    @SerializedName("id_professor")
+    private Long idProfessor;
 
     @SerializedName("id_notas")
-    private Integer idNotas;
+    private Long idNotas;
 
     private String nome;
 
@@ -19,27 +19,27 @@ public class Disciplinas {
 
     // Getter e Setter
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getIdCachorro() {
-        return idCachorro;
+    public Long getIdProfessor() {
+        return idProfessor;
     }
 
-    public void setIdCachorro(Integer idCachorro) {
-        this.idCachorro = idCachorro;
+    public void setIdProfessor(Long idProfessor) {
+        this.idProfessor = idProfessor;
     }
 
-    public Integer getIdNotas() {
+    public Long getIdNotas() {
         return idNotas;
     }
 
-    public void setIdNotas(Integer idNotas) {
+    public void setIdNotas(Long idNotas) {
         this.idNotas = idNotas;
     }
 
