@@ -56,7 +56,7 @@ public class DetalhesDisciplina extends Fragment {
             binding.nomeDisciplina.setText(nomeDisciplina);
         }
 
-        if (idAluno == null || idAluno.isEmpty()) {
+        if (idAluno == null ) {
             Toast.makeText(requireContext(), "Erro: Aluno não identificado", Toast.LENGTH_SHORT).show();
             return;
         }
