@@ -64,4 +64,18 @@ public interface ApiPostgres {
     @POST("/login")
     Call<Cachorro> efetuarLogin(@Body LoginRequest dados);
 
+    @FormUrlEncoded
+    @POST("/atualizar_descricao.php") // Nome do seu endpoint
+    Call<Void> atualizarDescricao(
+            @Field("id_pet") String idPet,
+            @Field("descricao") String descricao
+    );
+
+    @FormUrlEncoded
+    @POST("/atualizar_foto.php")
+    Call<Void> atualizarFoto(
+            @Field("id_pet") String idPet,
+            @Field("url_foto") String urlFoto
+    );
+
 }

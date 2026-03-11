@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "293417106493",
+    "project_id": "escolaboaparacachorro-professo",
+    "storage_bucket": "escolaboaparacachorro-professo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293417106493:android:4a5271cbe91ca981f5fe54",
+        "android_client_info": {
+          "package_name": "com.example.escolaboaparacachorro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBac5DSg9SdM3THEXxsfHDoubS_LU0bpAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

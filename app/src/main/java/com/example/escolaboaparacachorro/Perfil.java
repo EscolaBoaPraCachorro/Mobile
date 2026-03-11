@@ -1,45 +1,23 @@
-package com.example.escolaboaparacachorro;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.bumptech.glide.Glide;
-import com.example.escolaboaparacachorro.api.ApiPostgres;
-import com.example.escolaboaparacachorro.databinding.FragmentPerfilBinding;
-import com.example.escolaboaparacachorro.model.Cachorro;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class Perfil extends Fragment {
 
     private FragmentPerfilBinding binding;
-    private String id_aluno = "";
+    private String idPet;
+    private boolean modoEdicao;
     private ApiPostgres apiPostgres;
-    private Retrofit retrofit;
+    private FirebaseStorage storage;
+    private ImageCapture imageCapture;
+    private ExecutorService cameraExecutor;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        apiPostgres = RetrofitClient.getInstance(); // Uso limpo da API
+        storage = FirebaseStorage.getInstance();
+        cameraExecutor = Executors.newSingleThreadExecutor();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -48,35 +26,99 @@ public class Perfil extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // PEGAR ID CACHORRO POR SHARED PREFERENCES
-        // id_aluno = PreferencesHelper.getIdAluno(requireContext());
-        id_aluno = "123";
-
-        if (id_aluno.isEmpty()) {
-            Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
-            return;
+        // Recuperar dados (Intent/Arguments)
+        if (getArguments() != null) {
+            idPet = getArguments().getString("ID_PET");
+            modoEdicao = getArguments().getBoolean("MODO_EDICAO", false);
         }
 
-        Intent intent = getActivity().getIntent();
-        boolean eDono = intent.getBooleanExtra("MODO_EDICAO", false);
-        configurarLayout(eDono);
-
+        configurarInterface();
         carregarDadosDoPerfil();
+
+        binding.editImg.setOnClickListener(v -> tirarFoto());
+        binding.editDescr.setOnClickListener(v -> salvarDescricao());
+    }
+
+    private void configurarInterface() {
+        if (modoEdicao) {
+            binding.viewFinder.setVisibility(View.VISIBLE);
+            binding.editImg.setVisibility(View.VISIBLE);
+            binding.descricaoPet.setEnabled(true);
+            iniciarCameraX(); // Inicializa o visor da câmera
+        }
+    }
+
+    // --- LÓGICA DO CAMERAX ---
+    private void iniciarCameraX() {
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+
+        cameraProviderFuture.addListener(() -> {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                Preview preview = new Preview.Builder().build();
+                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+
+                imageCapture = new ImageCapture.Builder()
+                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
+                        .build();
+
+                cameraProvider.unbindAll();
+                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
+            } catch (Exception e) {
+                Log.e("CameraX", "Erro ao iniciar", e);
+            }
+        }, ContextCompat.getMainExecutor(requireContext()));
+    }
+
+    private void tirarFoto() {
+        if (imageCapture == null) return;
+
+        File file = new File(requireContext().getExternalFilesDir(null), idPet + ".jpg");
+        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
+
+        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
+            @Override
+            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
+                Uri uri = Uri.fromFile(file);
+                binding.imageView10.setImageURI(uri); // UI rápida
+                fazerUploadFirebase(uri); // Upload otimizado
+            }
+
+            @Override
+            public void onError(@NonNull ImageCaptureException exc) {
+                Toast.makeText(getContext(), "Erro ao capturar", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // --- FIREBASE + POSTGRES ---
+    private void fazerUploadFirebase(Uri uri) {
+        Toast.makeText(getContext(), "Atualizando foto...", Toast.LENGTH_SHORT).show();
+        StorageReference ref = storage.getReference().child("fotos_pets/" + idPet + ".jpg");
+
+        ref.putFile(uri).addOnSuccessListener(task -> {
+            ref.getDownloadUrl().addOnSuccessListener(url -> {
+                salvarLinkNoPostgres(url.toString());
+            });
+        });
+    }
+
+    private void salvarLinkNoPostgres(String url) {
+        apiPostgres.atualizarFoto(idPet, url).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) Toast.makeText(getContext(), "Foto sincronizada!", Toast.LENGTH_SHORT).show();
+            }
+            @Override public void onFailure(Call<Void> call, Throwable t) {}
+        });
     }
 
     private void carregarDadosDoPerfil() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://api-lxnr.onrender.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiPostgres = retrofit.create(ApiPostgres.class);
-
-        apiPostgres.getCachorroPorId(id_aluno).enqueue(new Callback<List<Cachorro>>() {
+        apiPostgres.getCachorroPorId(idPet).enqueue(new Callback<List<Cachorro>>() {
             @Override
             public void onResponse(Call<List<Cachorro>> call, Response<List<Cachorro>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    Cachorro cachorro = response.body().get(0);
-                    preencherDadosCachorro(cachorro);
+                    preencherDadosCachorro(response.body().get(0));
                 }
             }
             @Override
@@ -85,34 +127,14 @@ public class Perfil extends Fragment {
             }
         });
 
-        apiPostgres.getImagemCachorro(id_aluno).enqueue(new Callback<Cachorro>() {
-            @Override
-            public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Glide.with(requireContext())
-                            .load(response.body().getImagem())
-                            .into(binding.imageView10);
-                }
-            }
-            @Override
-            public void onFailure(Call<Cachorro> call, Throwable t) {}
-        });
-
-        apiPostgres.getIdTutorCachorro(id_aluno).enqueue(new Callback<Cachorro>() {
+        apiPostgres.getIdTutorCachorro(idPet).enqueue(new Callback<Cachorro>() {
             @Override
             public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Cachorro tutor = response.body();
                     binding.textView17.setText(tutor.getNome());
-
-                    // Transformando a String de data em idade numerp
-                    String idadeTutor = calcularIdade(tutor.getDataNascimento());
-                    binding.idadeT.setText(idadeTutor);
-
-                    Glide.with(requireContext())
-                            .load(tutor.getImagem())
-                            .circleCrop()
-                            .into(binding.imageView12);
+                    binding.idadeT.setText(calcularIdade(tutor.getDataNascimento()) + " anos");
+                    Glide.with(requireContext()).load(tutor.getImagem()).circleCrop().into(binding.imageView12);
                 }
             }
             @Override
@@ -120,50 +142,25 @@ public class Perfil extends Fragment {
         });
     }
 
-    private void preencherDadosCachorro(Cachorro cachorro) {
-        binding.nome.setText(cachorro.getNome());
-
-
-        binding.idade.setText(calcularIdade(cachorro.getDataNascimento()) + "anos");
-
-        binding.turma.setText(cachorro.getTurma());
-        binding.sexo.setText(cachorro.getSexo());
-        binding.raca.setText(cachorro.getRaca());
-    }
-
-    private String calcularIdade(String dataNascimentoString) {
-        if (dataNascimentoString == null || dataNascimentoString.isEmpty()) return "0";
-
+    private String calcularIdade(String dataNascString) {
+        if (dataNascString == null || dataNascString.isEmpty()) return "0";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         try {
-            Date dataNasc = sdf.parse(dataNascimentoString);
-            Calendar dataNascimento = Calendar.getInstance();
-            dataNascimento.setTime(dataNasc);
-
+            Date dataNasc = sdf.parse(dataNascString);
+            Calendar nasc = Calendar.getInstance();
+            nasc.setTime(dataNasc);
             Calendar hoje = Calendar.getInstance();
-
-            int idade = hoje.get(Calendar.YEAR) - dataNascimento.get(Calendar.YEAR);
-
-            if (hoje.get(Calendar.DAY_OF_YEAR) < dataNascimento.get(Calendar.DAY_OF_YEAR)) {
-                idade--;
-            }
-
+            int idade = hoje.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
+            if (hoje.get(Calendar.DAY_OF_YEAR) < nasc.get(Calendar.DAY_OF_YEAR)) idade--;
             return String.valueOf(idade);
-        } catch (ParseException e) {
-            Log.e("DATA_ERROR", "Erro ao converter data: " + dataNascimentoString);
-            return "0";
-        }
+        } catch (ParseException e) { return "0"; }
     }
 
-    private void configurarLayout(boolean eDono) {
-        int visibilidade = eDono ? View.VISIBLE : View.GONE;
-        binding.editImg.setVisibility(visibilidade);
-        binding.editDescr.setVisibility(visibilidade);
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        cameraExecutor.shutdown();
         binding = null;
     }
 }
