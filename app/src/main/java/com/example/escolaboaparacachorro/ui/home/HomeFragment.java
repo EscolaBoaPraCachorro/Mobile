@@ -39,12 +39,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sessionManager = new SessionManager(requireContext());
         apiPostgres = RetrofitClient.getInstance();
 
         idCachorroLogado = sessionManager.getDogId();
 
 
-        if (idCachorroLogado.isEmpty()) {
+        if (idCachorroLogado == null) {
             Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
             return;
         }
