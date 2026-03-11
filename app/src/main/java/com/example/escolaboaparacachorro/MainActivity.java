@@ -1,6 +1,7 @@
 package com.example.escolaboaparacachorro;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.escolaboaparacachorro.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         navView.setItemIconTintList(null);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.boletim, R.id.home, R.id.aumigos)

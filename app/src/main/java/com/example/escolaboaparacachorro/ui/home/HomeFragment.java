@@ -8,23 +8,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.escolaboaparacachorro.BaseFragment; // Importante: herdar do novo Base
 import com.example.escolaboaparacachorro.DetalhesDisciplina;
 import com.example.escolaboaparacachorro.R;
+import com.example.escolaboaparacachorro.api.ApiPostgres;
 import com.example.escolaboaparacachorro.databinding.FragmentHomeBinding;
+import com.example.escolaboaparacachorro.helpers.RetrofitClient;
+import com.example.escolaboaparacachorro.helpers.SessionManager;
 import com.example.escolaboaparacachorro.model.Cachorro;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private String idCachorroLogado;
     private ApiPostgres apiPostgres;
+    private SessionManager sessionManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

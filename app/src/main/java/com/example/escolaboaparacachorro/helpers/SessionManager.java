@@ -1,4 +1,4 @@
-package com.example.escolaboaparacachorro;
+package com.example.escolaboaparacachorro.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -26,11 +26,11 @@ public class SessionManager {
     }
 
     public String getDogId() {
-        return sharedPreferences.getString(KEY_DOG_ID, "");
+        return sharedPreferences.getString(KEY_DOG_ID, null);
     }
 
     public String getTutorUid() {
-        return sharedPreferences.getString(KEY_TUTOR_UID, "");
+        return sharedPreferences.getString(KEY_TUTOR_UID, null);
     }
 
     public boolean isLoggedIn() {

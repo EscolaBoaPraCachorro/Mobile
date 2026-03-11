@@ -1,31 +1,41 @@
 package com.example.escolaboaparacachorro;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-public class SplashScreen extends AppCompatActivity {
+import com.example.escolaboaparacachorro.ui.home.HomeFragment;
+
+public class SplashScreen extends Fragment {
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Infla o layout que era da sua Activity
+        return inflater.inflate(R.layout.fragment_splash_screen, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_splash_screen);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreen.this, Login.class);
-            startActivity(intent);
-            finish();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        HomeFragment proximoFragmento = new HomeFragment();
+        // Handler para esperar os 10 segundos (ajustado para o padrão moderno)
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (isAdded()) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.home_fragment, proximoFragmento)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }, 10000);
     }
 }
