@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
     private ShapeableImageView perfil;
     private ApiPostgres apiPostgres;
     private String idCachorroLogado;
-
+    private SessionManager sessionManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,16 +48,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        idCachorroLogado = "";
+        sessionManager = new SessionManager(requireContext());
+        String nomeDisciplina = "";
+        long id_aluno_long = -1;
 
-        //PEGAR ID CACHORRO POR PREFERENCES
-
-      //  idCachorroLogado = PreferencesHelper.getIdAluno(requireContext());
-
-       // if (idCachorroLogado.isEmpty()) {
-       //     Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
-      //      return;
-      //  }
+        id_aluno_long = sessionManager.getUserId();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api-lxnr.onrender.com")

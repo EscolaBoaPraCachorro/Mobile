@@ -37,7 +37,6 @@ public interface ApiPostgres {
     @GET("/buscarImagemProfessorPorId/{id}")
     Call<Professor> getImagemProfPorId(@Path("id") String id);
 
-
     @GET("/buscarNomeProfessorPorId/{id}")
     Call<Professor> getNomeProfPorId(@Path("id") String id);
     @GET("/buscarDataNacimentoProfessorPorId/{id}")
@@ -62,16 +61,7 @@ public interface ApiPostgres {
     @GET("/buscarNotaPorIdCachorro/{id}")
     Call<List<Notas>> getNotas();
 
-
-
-
-
-
-
-
-
-
-
-
+    @POST("/login")
+    Call<Cachorro> efetuarLogin(@Body LoginRequest dados);
 
 }
