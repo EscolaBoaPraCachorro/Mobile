@@ -40,6 +40,8 @@ public class DetalhesDisciplina extends Fragment {
     private Retrofit retrofit;
     private ApiPostgres apiPostgres;
 
+    private SessionManager sessionManager;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetalhesDisciplinaBinding.inflate(inflater, container, false);
@@ -50,6 +52,8 @@ public class DetalhesDisciplina extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sessionManager = new SessionManager(requireContext());
+
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://api-lxnr.onrender.com")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -57,15 +61,16 @@ public class DetalhesDisciplina extends Fragment {
         apiPostgres = retrofit.create(ApiPostgres.class);
 
         String nomeDisciplina = "";
-        String id_aluno = "";
-        // PEGAR ID CACHORRO POR SHARED PREFERENCES
+        long id_aluno_long = -1;
 
-        //idCachorroLogado = PreferencesHelper.getIdAluno(requireContext());
+        id_aluno_long = sessionManager.getUserId();
 
-        // if (idCachorroLogado.isEmpty()) {
-        //     Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
-        //      return;
-        //  }
+
+        if (id_aluno_long == -1) {
+            Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         if (getArguments() != null) {
             nomeDisciplina = getArguments().getString("nome_disciplina");
