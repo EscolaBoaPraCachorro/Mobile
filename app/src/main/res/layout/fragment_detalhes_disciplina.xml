@@ -113,7 +113,7 @@
 
 
         <TextView
-            android:id="@+id/idadeT"
+            android:id="@+id/observacoes"
             android:layout_width="match_parent"
             android:layout_height="139dp"
             android:layout_marginTop="19dp"

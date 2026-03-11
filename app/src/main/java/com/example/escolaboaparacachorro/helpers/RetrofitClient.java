@@ -1,14 +1,24 @@
+package com.example.escolaboaparacachorro.helpers;
+
+import com.example.escolaboaparacachorro.api.ApiPostgres;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class RetrofitClient {
-    private static final String BASE_URL = "https://api-lxnr.onrender.com";
-    private static ApiPostgres instance;
+    private static final String BASE_URL = "https://api-lxnr.onrender.com/";
+    private static volatile ApiPostgres instance;
 
     public static ApiPostgres getInstance() {
         if (instance == null) {
-            instance = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(ApiPostgres.class);
+            synchronized (RetrofitClient.class) {
+                if (instance == null) {
+                    instance = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                            .create(ApiPostgres.class);
+                }
+            }
         }
         return instance;
     }
