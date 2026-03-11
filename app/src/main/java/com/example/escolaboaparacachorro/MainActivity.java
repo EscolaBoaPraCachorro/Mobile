@@ -3,6 +3,7 @@ package com.example.escolaboaparacachorro;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.loginFragment) {
+                navView.setVisibility(View.GONE);
+                getSupportActionBar().hide();
+            } else {
+                navView.setVisibility(View.VISIBLE);
+                getSupportActionBar().show();
+            }
+        });
+
         binding.navView.setOnItemSelectedListener(item -> {
 
 
@@ -65,5 +76,7 @@ public class MainActivity extends AppCompatActivity {
             return NavigationUI.onNavDestinationSelected(item, navController)
                     || super.onOptionsItemSelected(item);
         });
+
+
     }
 }

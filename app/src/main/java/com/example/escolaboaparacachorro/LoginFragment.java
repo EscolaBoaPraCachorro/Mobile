@@ -22,8 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
-    private FragmentLoginBinding binding; // Usaremos o binding para facilitar
-    private SessionManager sessionManager = new SessionManager(getContext());
+    private FragmentLoginBinding binding;
+    private SessionManager sessionManager;
     private FirebaseAuth mAuth;
 
     @Nullable

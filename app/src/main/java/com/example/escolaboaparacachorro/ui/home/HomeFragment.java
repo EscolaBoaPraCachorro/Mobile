@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
 
     private void configurarCliquesMaterias() {
         View.OnClickListener materiaClickListener = v -> {
-            String nome = "";
+            String nome = null;
             int id = v.getId();
 
             if (id == R.id.cardObediencia) nome = "Obediência";
@@ -87,7 +87,9 @@ public class HomeFragment extends Fragment {
             else if (id == R.id.cardTrick) nome = "Trick";
             else if (id == R.id.cardEtiqueta) nome = "Etiqueta";
 
-            if (!nome.isEmpty()) navegarParaDetalhes(nome);
+            if (nome != null) {
+                navegarParaDetalhes(nome);
+            }
         };
 
         binding.cardObediencia.setOnClickListener(materiaClickListener);
@@ -105,8 +107,9 @@ public class HomeFragment extends Fragment {
         DetalhesDisciplina proximoFragmento = new DetalhesDisciplina();
         proximoFragmento.setArguments(bundle);
 
+
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.home_fragment, proximoFragmento)
+                .replace(R.id.home, proximoFragmento)
                 .addToBackStack(null)
                 .commit();
     }
