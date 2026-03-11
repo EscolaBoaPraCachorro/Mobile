@@ -1,35 +1,68 @@
 package com.example.escolaboaparacachorro;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public class EsqueceuASenha extends AppCompatActivity {
+import com.example.escolaboaparacachorro.databinding.FragmentEsqueceuSenhaBinding;
+import com.google.firebase.auth.FirebaseAuth;
+
+public class EsqueceuSenhaFragment extends BaseFragment {
+
+    private FragmentEsqueceuSenhaBinding binding;
+    private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_esqueceu_asenha);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentEsqueceuSenhaBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        binding.btnEnviarEmail.setOnClickListener(v -> {
+            String email = binding.editEmailEsqueceu.getText().toString().trim();
+
+            if (email.isEmpty()) {
+                binding.editEmailEsqueceu.setError("Digite seu e-mail");
+                return;
+            }
+
+            enviarEmailRecuperacao(email);
         });
 
-        ImageView comeback = findViewById(R.id.imageView4);
-        comeback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EsqueceuASenha.this, Login.class));
-            }
-        });
+        binding.imageView4.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+    }
+
+    private void enviarEmailRecuperacao(String email) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(),
+                                "E-mail de recuperação enviado para: " + email,
+                                Toast.LENGTH_LONG).show();
+
+
+                        getParentFragmentManager().popBackStack();
+                    } else {
+                        String erro = task.getException() != null ? task.getException().getMessage() : "Erro desconhecido";
+                        Toast.makeText(getContext(), "Erro: " + erro, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

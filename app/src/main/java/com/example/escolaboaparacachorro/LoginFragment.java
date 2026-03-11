@@ -57,28 +57,25 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private void fazerLoginPelaApi(String email, String senha) {
-        LoginRequest dadosLogin = new LoginRequest(email, senha);
+    private void fazerLoginComFirebase(String email, String senha) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        RetrofitClient.getInstance().getApi().efetuarLogin(dadosLogin).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
+        mAuth.signInWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                    long idDoCachorro = response.body().getId();
+                        if (user != null) {
+                            String userId = user.getUid();
 
-                    sessionManager.createLoginSession(idDoCachorro, email);
-                    irParaTelaPrincipal();
-                } else {
-                    Toast.makeText(getContext(), "E-mail ou senha inválidos", Toast.LENGTH_SHORT).show();
-                }
-            }
+                            sessionManager.createLoginSession(userId, email);
 
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Erro de conexão: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                            irParaTelaPrincipal();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Erro no Firebase: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void irParaTelaPrincipal() {

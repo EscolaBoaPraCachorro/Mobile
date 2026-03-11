@@ -1,29 +1,40 @@
+package com.example.escolaboaparacachorro;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class SessionManager {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
     private static final String PREF_NAME = "UserSession";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_EMAIL = "userEmail";
-    private static final String KEY_USER_ID = "userId";
+    private static final String KEY_TUTOR_UID = "tutorUid";
+    private static final String KEY_DOG_ID = "dogId";
 
     public SessionManager(Context context) {
         sharedPreferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 
-    public void createLoginSession(long userId, String email) {
+    public void createLoginSession(String tutorUid, String email, String dogId) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
-        editor.putLong(KEY_USER_ID, userId);
+        editor.putString(KEY_TUTOR_UID, tutorUid);
         editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_DOG_ID, dogId);
         editor.apply();
+    }
+
+    public String getDogId() {
+        return sharedPreferences.getString(KEY_DOG_ID, "");
+    }
+
+    public String getTutorUid() {
+        return sharedPreferences.getString(KEY_TUTOR_UID, "");
     }
 
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
-    }
-
-    public long getUserId() {
-        return sharedPreferences.getLong("userId", -1);
     }
 
     public void logout() {
