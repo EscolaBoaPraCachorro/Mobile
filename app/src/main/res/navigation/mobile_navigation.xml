@@ -11,20 +11,30 @@
 
     <fragment
         android:id="@+id/boletim"
-        android:name="com.example.escolaboaparacachorro.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home"
-        />
+        android:name="com.example.escolaboaparacachorro.ui.dashboard.DashboardFragment"
+        android:label="Boletim"
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/home"
-        android:name="com.example.escolaboaparacachorro.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.example.escolaboaparacachorro.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/aumigos"
         android:name="com.example.escolaboaparacachorro.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/detalhesDisciplina"
+        android:name="com.example.escolaboaparacachorro.DetalhesDisciplina"
+        android:label="Detalhes"
+        tools:layout="@layout/fragment_detalhes_disciplina" />
+
+    <fragment
+        android:id="@+id/perfilFragment"
+        android:name="com.example.escolaboaparacachorro.Perfil"
+        android:label="Perfil do Pet"
+        tools:layout="@layout/fragment_perfil" />
 </navigation>

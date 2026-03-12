@@ -62,7 +62,9 @@ public class DetalhesDisciplina extends Fragment {
         }
 
         binding.rvNotas.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.voltar.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+         binding.voltar.setOnClickListener(v ->
+                androidx.navigation.Navigation.findNavController(v).navigateUp()
+        );
 
         carregarDadosIniciais(nomeDisciplina, idAluno);
     }

@@ -104,14 +104,8 @@ public class HomeFragment extends Fragment {
         bundle.putString("nome_disciplina", nomeDisciplina);
         bundle.putString("id_aluno", idCachorroLogado);
 
-        DetalhesDisciplina proximoFragmento = new DetalhesDisciplina();
-        proximoFragmento.setArguments(bundle);
-
-
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.home, proximoFragmento)
-                .addToBackStack(null)
-                .commit();
+        androidx.navigation.Navigation.findNavController(requireView())
+                .navigate(R.id.detalhesDisciplina, bundle);
     }
 
     @Override
