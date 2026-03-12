@@ -8,138 +8,154 @@
     android:background="#4232B2"
     tools:context=".ui.home.HomeFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/perfil3"
-        android:layout_width="79dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ImagemRedonda"
-        app:strokeColor="@color/white"
-        app:strokeWidth="3dp"
-        tools:src="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/bemVindo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/josefin_sans"
         android:text="Olá, cachorrinho"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView21"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:fontFamily="@font/josefin_sans"
         android:text="Veja seu desempenho por disciplina"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/perfil3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bemVindo" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/perfil3"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ImagemRedonda"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        tools:src="@tools:sample/avatars" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardObediencia"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        app:cardCornerRadius="12dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="#FFA94D"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/cardSocializacao"
-        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView21">
 
         <TextView
-            android:id="@+id/txtObediencia"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Obediência" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/itim"
+            android:text="Obediência"
+            android:textColor="#000000"
+            android:textSize="19sp" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSocializacao"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="12dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardBackgroundColor="#FFA94D"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardObediencia"
         app:layout_constraintTop_toTopOf="@+id/cardObediencia">
 
         <TextView
-            android:id="@+id/txtSocializacao"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Socialização" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/itim"
+            android:text="Socialização"
+            android:textColor="#000000"
+            android:textSize="19sp" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardAutocontrole"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardObediencia"
-        app:layout_constraintStart_toStartOf="@+id/cardObediencia"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#FFA94D"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/cardTrick"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardObediencia">
 
         <TextView
-            android:id="@+id/txtAutocontrole"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Autocontrole" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/itim"
+            android:text="Autocontrole"
+            android:textColor="#000000"
+            android:textSize="19sp" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardTricks"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardSocializacao"
-        app:layout_constraintStart_toStartOf="@+id/cardSocializacao"
-        app:layout_constraintTop_toBottomOf="@+id/cardSocializacao">
+        android:id="@+id/cardTrick"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardBackgroundColor="#FFA94D"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardAutocontrole"
+        app:layout_constraintTop_toTopOf="@+id/cardAutocontrole">
 
         <TextView
-            android:id="@+id/cardTrick"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Trick Training" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/itim"
+            android:text="Trick Training"
+            android:textColor="#000000"
+            android:textSize="19sp" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardEtiqueta"
-        android:layout_width="0dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardAutocontrole"
-        app:layout_constraintStart_toStartOf="@+id/cardAutocontrole"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#FFA94D"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardAutocontrole">
 
         <TextView
-            android:id="@+id/txtEtiqueta"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/itim"
             android:gravity="center"
-            android:text="Etiqueta de passeio" />
+            android:text="Etiqueta\nde\npasseio"
+            android:textColor="#000000"
+            android:textSize="19sp" />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

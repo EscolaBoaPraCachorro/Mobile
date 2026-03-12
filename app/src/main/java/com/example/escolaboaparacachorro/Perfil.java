@@ -69,6 +69,10 @@ public class Perfil extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.voltarPerfil.setOnClickListener(v ->
+                androidx.navigation.Navigation.findNavController(v).navigateUp()
+        );
+
         if (getArguments() != null) {
             idPet = getArguments().getString("ID_PET");
             modoEdicao = getArguments().getBoolean("MODO_EDICAO", false);

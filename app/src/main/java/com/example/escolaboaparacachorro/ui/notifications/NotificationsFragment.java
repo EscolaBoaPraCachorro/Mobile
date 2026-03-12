@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.escolaboaparacachorro.Perfil;
+import com.example.escolaboaparacachorro.R;
 import com.example.escolaboaparacachorro.helpers.RetrofitClient;
 import com.example.escolaboaparacachorro.helpers.SessionManager;
 import com.example.escolaboaparacachorro.adapter.AumigosAdapter;
@@ -48,12 +49,14 @@ public class NotificationsFragment extends Fragment {
         binding.perfil.setOnClickListener(v -> {
             String dogId = sessionManager.getDogId();
             if (dogId != null) {
-                Intent intent = new Intent(requireContext(), Perfil.class);
-                intent.putExtra("ID_PET", dogId);
-                intent.putExtra("MODO_EDICAO", true);
-                startActivity(intent);
+                Bundle args = new Bundle();
+                args.putString("ID_PET", dogId);
+                args.putBoolean("MODO_EDICAO", true);
+
+                androidx.navigation.Navigation.findNavController(v)
+                        .navigate(R.id.perfilFragment, args);
             } else {
-                Toast.makeText(requireContext(), "Erro: ID do pet não encontrado na sessão", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Erro: ID do pet não encontrado", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -85,10 +88,11 @@ public class NotificationsFragment extends Fragment {
     private void configurarAdapter(List<Cachorro> listaAumigos) {
         AumigosAdapter adapter = new AumigosAdapter(listaAumigos, cachorro -> {
             // Ao clicar em um aumigo da lista, abre o perfil em modo visualização
-            Intent intent = new Intent(requireContext(), Perfil.class);
-            intent.putExtra("ID_PET", String.valueOf(cachorro.getId()));
-            intent.putExtra("MODO_EDICAO", false);
-            startActivity(intent);
+            Bundle args = new Bundle();
+            args.putString("ID_PET", String.valueOf(cachorro.getId()));
+            args.putBoolean("MODO_EDICAO", false);
+            androidx.navigation.Navigation.findNavController(requireView())
+                    .navigate(R.id.perfilFragment, args);
         });
 
         binding.rvAumigos.setAdapter(adapter);

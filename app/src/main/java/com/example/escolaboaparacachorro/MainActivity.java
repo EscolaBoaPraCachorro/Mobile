@@ -15,6 +15,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.escolaboaparacachorro.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("FIREBASE_TEST", "Conexão com Firebase iniciada!");
 
         //nav bar
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -43,16 +44,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.loginFragment) {
-                navView.setVisibility(View.GONE);
-                getSupportActionBar().hide();
-            } else {
-                navView.setVisibility(View.VISIBLE);
-                getSupportActionBar().show();
-            }
-        });
 
         binding.navView.setOnItemSelectedListener(item -> {
 
@@ -76,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             return NavigationUI.onNavDestinationSelected(item, navController)
                     || super.onOptionsItemSelected(item);
         });
+
 
 
     }
