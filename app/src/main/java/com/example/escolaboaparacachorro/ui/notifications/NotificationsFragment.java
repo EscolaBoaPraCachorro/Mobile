@@ -47,10 +47,10 @@ public class NotificationsFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
 
         binding.perfil.setOnClickListener(v -> {
-            String dogId = sessionManager.getDogId();
-            if (dogId != null) {
+            Long dogId = sessionManager.getDogId();
+            if (dogId != null ) {
                 Bundle args = new Bundle();
-                args.putString("ID_PET", dogId);
+                args.putLong("ID_PET", dogId);
                 args.putBoolean("MODO_EDICAO", true);
 
                 androidx.navigation.Navigation.findNavController(v)
@@ -87,15 +87,17 @@ public class NotificationsFragment extends Fragment {
 
     private void configurarAdapter(List<Cachorro> listaAumigos) {
         AumigosAdapter adapter = new AumigosAdapter(listaAumigos, cachorro -> {
-            // Ao clicar em um aumigo da lista, abre o perfil em modo visualização
+            // Ao clicar em um aumigo da lista, abre o perfil em modo visualizaçO
             Bundle args = new Bundle();
-            args.putString("ID_PET", String.valueOf(cachorro.getId()));
+            args.putLong("ID_PET", cachorro.getId());
             args.putBoolean("MODO_EDICAO", false);
             androidx.navigation.Navigation.findNavController(requireView())
                     .navigate(R.id.perfilFragment, args);
         });
 
         binding.rvAumigos.setAdapter(adapter);
+
+
     }
 
     private void showError(String mensagem) {

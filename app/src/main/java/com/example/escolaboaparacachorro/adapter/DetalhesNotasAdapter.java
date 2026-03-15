@@ -41,13 +41,12 @@ public class DetalhesNotasAdapter extends RecyclerView.Adapter<DetalhesNotasAdap
 
         //logica backgrond do card
         double nota = notas.getNota();
-        if(nota <5 ){
-            holder.card.setCardBackgroundColor(Color.parseColor("#6ECB3A"));
-        } else if (nota >=5 || nota <7) {
-            holder.card.setCardBackgroundColor(Color.parseColor("#FFC144"));
-        }
-        else {
+        if (nota < 5.0) {
             holder.card.setCardBackgroundColor(Color.parseColor("#E62B0D"));
+        } else if (nota < 7.0) {
+            holder.card.setCardBackgroundColor(Color.parseColor("#FFC144"));
+        } else {
+            holder.card.setCardBackgroundColor(Color.parseColor("#6ECB3A"));
         }
 
 

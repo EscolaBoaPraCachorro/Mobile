@@ -26,7 +26,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private String idCachorroLogado;
+    private Long idCachorroLogado;
     private ApiPostgres apiPostgres;
     private SessionManager sessionManager;
 
@@ -56,13 +56,12 @@ public class HomeFragment extends Fragment {
         configurarCliquesMaterias();
     }
 
-    private void carregarDadosCachorro(String id) {
+    private void carregarDadosCachorro(Long id) {
 
         apiPostgres.getImagemCachorro(id).enqueue(new Callback<Cachorro>() {
             @Override
             public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Atualiza a foto e o nome se quiser
                     Glide.with(requireContext())
                             .load(response.body().getImagem())
                             .into(binding.perfil3);
@@ -102,7 +101,7 @@ public class HomeFragment extends Fragment {
     private void navegarParaDetalhes(String nomeDisciplina) {
         Bundle bundle = new Bundle();
         bundle.putString("nome_disciplina", nomeDisciplina);
-        bundle.putString("id_aluno", idCachorroLogado);
+        bundle.putLong("id_aluno", idCachorroLogado);
 
         androidx.navigation.Navigation.findNavController(requireView())
                 .navigate(R.id.detalhesDisciplina, bundle);
