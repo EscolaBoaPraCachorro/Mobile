@@ -55,9 +55,6 @@ public class Cachorro {
 
 
     public String getImagem () {
-        if (this.imagem == null || this.imagem.isEmpty()) {
-            return "https://i.pinimg.com/1200x/4d/14/89/4d1489adc39294dcc6307f007456f135.jpg";
-        }
         return imagem;
     }
 

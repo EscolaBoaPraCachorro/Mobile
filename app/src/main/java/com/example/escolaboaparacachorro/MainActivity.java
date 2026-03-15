@@ -1,74 +1,39 @@
 package com.example.escolaboaparacachorro;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.escolaboaparacachorro.databinding.ActivityMainBinding;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.escolaboaparacachorro.helpers.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FirebaseApp.initializeApp(this);
-        Log.d("FIREBASE_TEST", "Conexão com Firebase iniciada!");
-
-        //nav bar
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
-        navView.setItemIconTintList(null);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.boletim, R.id.home, R.id.aumigos)
-                .build();
+        sessionManager = new SessionManager(this);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        // Se NÃO estiver logado e NÃO estiver na tela de login/escolha, manda pro login
+        if (!sessionManager.isLoggedIn()) {
+            navController.navigate(R.id.loginFragment);
+        }
 
-        binding.navView.setOnItemSelectedListener(item -> {
-
-
-            Menu menu = binding.navView.getMenu();
-            menu.findItem(R.id.home).setIcon(R.drawable.home_off);
-            menu.findItem(R.id.boletim).setIcon(R.drawable.boletim_off);
-            menu.findItem(R.id.aumigos).setIcon(R.drawable.aumigos_off);
-
-
-            int id = item.getItemId();
-            if (id == R.id.home) {
-                item.setIcon(R.drawable.home_on);
-            } else if (id == R.id.boletim) {
-                item.setIcon(R.drawable.boletim_on);
-            } else if (id == R.id.aumigos) {
-                item.setIcon(R.drawable.aumigos_on);
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.escolhaCachorro) {
+                binding.navView.setVisibility(View.GONE);
+            } else {
+                binding.navView.setVisibility(View.VISIBLE);
             }
-
-
-            return NavigationUI.onNavDestinationSelected(item, navController)
-                    || super.onOptionsItemSelected(item);
         });
-
-
-
     }
 }

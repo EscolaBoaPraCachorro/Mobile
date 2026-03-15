@@ -4,24 +4,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.example.escolaboaparacachorro.databinding.FragmentEsqueceuSenhaBinding;
+import androidx.navigation.Navigation;
 import com.example.escolaboaparacachorro.databinding.FragmentLoginBinding;
+import com.example.escolaboaparacachorro.helpers.RetrofitClient;
 import com.example.escolaboaparacachorro.helpers.SessionManager;
-import com.example.escolaboaparacachorro.ui.home.HomeFragment;
-import com.google.android.material.textfield.TextInputEditText;
+import com.example.escolaboaparacachorro.model.Cachorro;
+import com.example.escolaboaparacachorro.model.Tutor;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
-
     private FragmentLoginBinding binding;
     private SessionManager sessionManager;
     private FirebaseAuth mAuth;
@@ -29,65 +28,70 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inicializa o View Binding
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-
         sessionManager = new SessionManager(requireContext());
         mAuth = FirebaseAuth.getInstance();
-
-        // Se já estiver logado, vai direto para a Home
-        if (sessionManager.isLoggedIn()) {
-            irParaTelaPrincipal();
-        }
-
-        // Navegação para "Esqueceu Senha"
-        binding.textView4.setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.loginFragment, new EsqueceuSenha()) // Use o ID do container da Activity
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-        // Botão Confirmar
-        binding.confirmar.setOnClickListener(v -> {
-            String emailTxt = binding.email.getText().toString().trim();
-            String senhaTxt = binding.senha.getText().toString().trim();
-
-            if (!emailTxt.isEmpty() && !senhaTxt.isEmpty()) {
-                fazerLoginComFirebase(emailTxt, senhaTxt);
-            } else {
-                Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         return binding.getRoot();
     }
 
-    private void fazerLoginComFirebase(String email, String senha) {
-        mAuth.signInWithEmailAndPassword(email, senha)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            sessionManager.createLoginSession(user.getUid(), email, "dog_default_id");
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-                            irParaTelaPrincipal();
-                        }
+        binding.confirmar.setOnClickListener(v -> {
+            String email = binding.email.getText().toString().trim();
+            String senha = binding.senha.getText().toString().trim();
+            if (!email.isEmpty() && !senha.isEmpty()) {
+                mAuth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        verificarCachorrosDoTutor(email);
                     } else {
-                        Toast.makeText(getContext(), "Erro: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Erro de login", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
     }
 
-    private void irParaTelaPrincipal() {
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.loginFragment, new HomeFragment()) // Use o ID do container da Activity
-                .commit();
+    private void verificarCachorrosDoTutor(String email) {
+        RetrofitClient.getInstance().getDadosTutorEmail(email).enqueue(new Callback<Tutor>() {
+            @Override
+            public void onResponse(@NonNull Call<Tutor> call, @NonNull Response<Tutor> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Long tutorId = response.body().getId();
+                    buscarListaDeCachorros(tutorId, email);
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Tutor> call, @NonNull Throwable t) { /* Toast */ }
+        });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void buscarListaDeCachorros(Long tutorId, String email) {
+        // Usando o endpoint que retorna a LISTA de cachorros do tutor
+        RetrofitClient.getInstance().getDogsPorTutor(tutorId).enqueue(new Callback<List<Cachorro>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Cachorro>> call, @NonNull Response<List<Cachorro>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Cachorro> lista = response.body();
+
+                    if (lista.size() == 1) {
+                        // CASO 1: Apenas um cachorro -> Vai direto
+                        sessionManager.createLoginSession(tutorId, email, lista.get(0).getId());
+                        Navigation.findNavController(requireView()).navigate(R.id.home);
+                    } else if (lista.size() > 1) {
+                        // CASO 2: Vários cachorros -> Vai para tela de escolha
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("tutorId", tutorId);
+                        bundle.putString("email", email);
+                        Navigation.findNavController(requireView()).navigate(R.id.escolhaCachorro, bundle);
+                    } else {
+                        Toast.makeText(getContext(), "Nenhum pet cadastrado", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<List<Cachorro>> call, @NonNull Throwable t) { /* Toast */ }
+        });
     }
 }

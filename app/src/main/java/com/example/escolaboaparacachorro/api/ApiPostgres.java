@@ -24,80 +24,52 @@ public interface ApiPostgres {
     @GET("/listar")
     Call<List<Cachorro>> listarCachorros();
 
-    // Corrigido: Path "id" deve bater com {id} na URL
     @GET("/buscarCaoPorId/{id}")
-    Call<List<Cachorro>> getCachorroPorId(@Path("id") String idCachorro);
+    Call<List<Cachorro>> getCachorroPorId(@Path("id") Long idCachorro);
 
     @GET("/buscarImagemPorCachorro/{id}")
-    Call<Cachorro> getImagemCachorro(@Path("id") String idCachorro);
+    Call<Cachorro> getImagemCachorro(@Path("id") Long idCachorro);
 
     @GET("/buscarObservacaoPorIdCachorro/{idCachorro}/Disciplina/{idProfessor}")
     Call<Observacoes> getObservacaoPorAlunoDisciplina(
-            @Path("idCachorro") String idAluno,
-            @Path("idProfessor") String idProfessor
+            @Path("idCachorro") Long idAluno,
+            @Path("idProfessor") Long idProfessor
     );
 
 
     @GET("/buscarNotaPorIdCachorro/{idCachorro}/Disciplina/{idProfessor}")
     Call<List<Notas>> getNotasPorAlunoDisciplina(
-            @Path("idCachorro") String idAluno,
-            @Path("idProfessor") String idProfessor
+            @Path("idCachorro") Long idAluno,
+            @Path("idProfessor") Long idProfessor
     );
 
     @GET("getIdTutorCachorro/{id}")
-    Call<Cachorro> getIdTutorCachorro(@Path("id") String idCachorro);
+    Call<Cachorro> getIdTutorCachorro(@Path("id") Long idCachorro);
 
     @GET("/buscarIdProfessorPorDisciplina/{disciplina}")
     Call<Disciplinas> getIdProfPorDisciplina(@Path("disciplina") String disciplina);
 
     @GET("/buscarImagemProfessorPorId/{id}")
-    Call<Professor> getImagemProfPorId(@Path("id") String id);
+    Call<Professor> getImagemProfPorId(@Path("id") Long id);
 
-    @GET("/buscarNomeProfessorPorId/{id}")
-    Call<Professor> getNomeProfPorId(@Path("id") String id);
+    @GET("/buscarDadosTutorPorEmail/{email}")
+    Call<Tutor> getDadosTutorEmail(@Path("email") String email);
 
-    @GET("/buscarDataNacimentoProfessorPorId/{id}")
-    Call<Professor> getDataNacimentoProfPorId(@Path("id") String id);
+    @GET("/buscarDadosCachorroPorIdTutor/{id}")
+    Call<Cachorro> getDadosCachorroPorIdTutor(@Path("id") Long ig);
 
-    @GET("/buscarImagemPorId/{id}")
-    Call<Tutor> getFotoTutorPorId(@Path("id") String id);
-
-    @GET("/buscarNomeTutorPorId/{id}")
-    Call<Tutor> getDataNomeTutorPorId(@Path("id") String id);
-
-    @GET("/buscarDataNacimentoTutorPorId/{id}")
-    Call<Tutor> getDataNacimentoTutorPorId(@Path("id") String id);
-
-    // Corrigido: Path "id" deve bater com {id}
-    @GET("/buscarImagemPorCachorro/{id}")
-    Call<Cachorro> getImagemCachorroId(@Path("id") String idCachorro);
-
-    @GET("/buscarDataNacimentoPorCachorro/{id}")
-    Call<Cachorro> getDataNascimentoCachorroId(@Path("id") String idCachorro);
-
-    @GET("/buscarNomePorCachorro/{id}")
-    Call<Cachorro> getNomeCachorroId(@Path("id") String idCachorro);
-
-    @GET("/buscarTurmaPorCachorro/{id}")
-    Call<Cachorro> getTurmaCachorroId(@Path("id") String idCachorro);
-
-    @GET("/buscarNotaPorIdCachorro/{id}")
-    Call<List<Notas>> getNotas(@Path("id") String idCachorro);
-
-    @POST("/login")
-    Call<Cachorro> efetuarLogin(@Body LoginRequest dados);
 
     @FormUrlEncoded
     @POST("/atualizar_descricao.php")
     Call<Void> atualizarDescricao(
-            @Field("id_pet") String idPet,
+            @Field("id_pet") Long idPet,
             @Field("descricao") String descricao
     );
 
     @FormUrlEncoded
     @POST("/atualizar_foto.php")
     Call<Void> atualizarFoto(
-            @Field("id_pet") String idPet,
+            @Field("id_pet") Long idPet,
             @Field("url_foto") String urlFoto
     );
 }

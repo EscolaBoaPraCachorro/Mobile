@@ -17,20 +17,22 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void createLoginSession(String tutorUid, String email, String dogId) {
+    public void createLoginSession(Long tutorUid, String email, Long dogId) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
-        editor.putString(KEY_TUTOR_UID, tutorUid);
+        editor.putLong(KEY_TUTOR_UID, tutorUid != null ? tutorUid : -1L);
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_DOG_ID, dogId);
+        editor.putLong(KEY_DOG_ID, dogId != null ? dogId : -1L);
         editor.apply();
     }
 
-    public String getDogId() {
-        return sharedPreferences.getString(KEY_DOG_ID, null);
+    public Long getDogId() {
+        long id = sharedPreferences.getLong(KEY_DOG_ID, -1L);
+        return (id == -1L) ? null : id;
     }
 
-    public String getTutorUid() {
-        return sharedPreferences.getString(KEY_TUTOR_UID, null);
+    public Long getTutorUid() {
+        long id = sharedPreferences.getLong(KEY_TUTOR_UID, -1L);
+        return (id == -1L) ? null : id;
     }
 
     public boolean isLoggedIn() {

@@ -44,11 +44,10 @@ public class DetalhesDisciplina extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Inicialização
         apiPostgres = RetrofitClient.getInstance();
         sessionManager = new SessionManager(requireContext());
 
-        String idAluno = sessionManager.getDogId();
+        Long idAluno = sessionManager.getDogId();
         String nomeDisciplina = "";
 
         if (getArguments() != null) {
@@ -69,16 +68,17 @@ public class DetalhesDisciplina extends Fragment {
         carregarDadosIniciais(nomeDisciplina, idAluno);
     }
 
-    private void carregarDadosIniciais(String disciplina, String idAluno) {
+    private void carregarDadosIniciais(String disciplina, Long idAluno) {
         apiPostgres.getIdProfPorDisciplina(disciplina).enqueue(new Callback<Disciplinas>() {
             @Override
             public void onResponse(@NonNull Call<Disciplinas> call, @NonNull Response<Disciplinas> response) {
                 if (binding == null) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    String idProfessor = String.valueOf(response.body().getIdProfessor());
+                    Long idProfessor = response.body().getIdProfessor();
                     buscarFotoProfessor(idProfessor);
                     buscarNotas(idProfessor, idAluno);
+                    buscarObservacoes(idProfessor, idAluno);
                 }
             }
             @Override
@@ -87,28 +87,51 @@ public class DetalhesDisciplina extends Fragment {
             }
         });
 
-        buscarObservacoes(disciplina, idAluno);
     }
 
-    private void buscarFotoProfessor(String idProfessor) {
+    private void buscarFotoProfessor(Long idProfessor) {
         apiPostgres.getImagemProfPorId(idProfessor).enqueue(new Callback<Professor>() {
             @Override
             public void onResponse(@NonNull Call<Professor> call, @NonNull Response<Professor> response) {
                 if (binding == null || !isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
+                    Professor prof = response.body();
                     Glide.with(requireContext())
                             .load(response.body().getImagem())
-                            .placeholder(R.drawable.ic_launcher_background)
+                            .placeholder(R.drawable.profduble)
                             .into(binding.fotoProfessor);
+
+                    // 2. Define o Nome
+                    binding.nomeProf.setText(prof.getNome());
+
+                    // 3. Calcula e define a Idade
+                    if (prof.getData_nascimento() != null) {
+                        String idadeFormatada = calcularIdade(prof.getData_nascimento()) + " anos";
+                        binding.idadeProf.setText(idadeFormatada);
+                    }
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<Professor> call, @NonNull Throwable t) {}
+            public void onFailure(@NonNull Call<Professor> call, @NonNull Throwable t) {
+
+            }
         });
     }
 
-    private void buscarNotas(String idProfessor, String idAluno) {
+
+    private int calcularIdade(String dataNascimento) {
+        try {
+
+            String[] partes = dataNascimento.split("-");
+            int anoNasc = Integer.parseInt(partes[0]);
+            int anoAtual = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+            return anoAtual - anoNasc;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    private void buscarNotas(Long idProfessor, Long idAluno) {
         apiPostgres.getNotasPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<List<Notas>>() {
             @Override
             public void onResponse(@NonNull Call<List<Notas>> call, @NonNull Response<List<Notas>> response) {
@@ -125,8 +148,8 @@ public class DetalhesDisciplina extends Fragment {
         });
     }
 
-    private void buscarObservacoes(String disciplina, String idAluno) {
-        apiPostgres.getObservacaoPorAlunoDisciplina(disciplina, idAluno).enqueue(new Callback<Observacoes>() {
+    private void buscarObservacoes(Long idProfessor, Long idAluno) {
+        apiPostgres.getObservacaoPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<Observacoes>() {
             @Override
             public void onResponse(@NonNull Call<Observacoes> call, @NonNull Response<Observacoes> response) {
                 if (binding == null) return;
@@ -134,7 +157,7 @@ public class DetalhesDisciplina extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     binding.observacoes.setText(response.body().getDescricao());
                 } else {
-                    binding.observacoes.setText("Sem observações para esta disciplina.");
+                    binding.observacoes.setText("Sem observações nesta disciplina.");
                 }
             }
             @Override
