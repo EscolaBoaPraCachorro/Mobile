@@ -7,6 +7,7 @@ import com.example.escolaboaparacachorro.model.Observacoes;
 import com.example.escolaboaparacachorro.model.Professor;
 import com.example.escolaboaparacachorro.model.Tutor;
 import com.example.escolaboaparacachorro.model.request.LoginRequest;
+import com.example.escolaboaparacachorro.model.response.TutorResponse;
 
 import java.util.List;
 
@@ -52,11 +53,11 @@ public interface ApiPostgres {
     @GET("/buscarImagemProfessorPorId/{id}")
     Call<Professor> getImagemProfPorId(@Path("id") Long id);
 
-    @GET("/buscarDadosTutorPorEmail/{email}")
+    @GET("api/tutor/buscarPorEmail/{email}")
     Call<Tutor> getDadosTutorEmail(@Path("email") String email);
 
-    @GET("/buscarDadosCachorroPorIdTutor/{id}")
-    Call<Cachorro> getDadosCachorroPorIdTutor(@Path("id") Long ig);
+    @GET("/buscarCachorroPorIdTutor/{id}")
+    Call<List<Cachorro>> getDadosCachorroPorIdTutor(@Path("id") Long ig);
 
 
     @FormUrlEncoded

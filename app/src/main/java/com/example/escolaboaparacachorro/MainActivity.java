@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // Se NÃO estiver logado e NÃO estiver na tela de login/escolha, manda pro login
+
         if (!sessionManager.isLoggedIn()) {
             navController.navigate(R.id.loginFragment);
         }
@@ -35,5 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.navView.setVisibility(View.VISIBLE);
             }
         });
+
+
     }
 }

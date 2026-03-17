@@ -5,7 +5,6 @@
     android:id="@+id/escolhaCachorro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EscolhaCachorro"
     android:background="#4232B2">
 
     <TextView
