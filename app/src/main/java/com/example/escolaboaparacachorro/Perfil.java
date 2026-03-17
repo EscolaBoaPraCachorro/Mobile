@@ -44,7 +44,7 @@ import retrofit2.Response;
 public class Perfil extends Fragment {
 
     private FragmentPerfilBinding binding;
-    private String idPet;
+    private Long idPet;
     private boolean modoEdicao;
     private ApiPostgres apiPostgres;
     private FirebaseStorage storage;
@@ -74,7 +74,7 @@ public class Perfil extends Fragment {
         );
 
         if (getArguments() != null) {
-            idPet = getArguments().getString("ID_PET");
+            idPet = getArguments().getLong("ID_PET");
             modoEdicao = getArguments().getBoolean("MODO_EDICAO", false);
         }
 

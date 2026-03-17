@@ -55,14 +55,13 @@ public class EscolhaCachorroFragment extends Fragment {
         }
 
         // Configura o RecyclerView com 2 colunas (Grid)
-        binding.rvCachorros.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.rvcachorros.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
         carregarListaCachorros();
     }
 
     private void carregarListaCachorros() {
-        // Usa o seu endpoint que busca cachorros pelo ID do Tutor
-        apiPostgres.getDogsPorTutor(tutorId).enqueue(new Callback<List<Cachorro>>() {
+        apiPostgres.getDadosCachorroPorIdTutor(tutorId).enqueue(new Callback<List<Cachorro>>() {
             @Override
             public void onResponse(@NonNull Call<List<Cachorro>> call, @NonNull Response<List<Cachorro>> response) {
                 if (binding == null) return;
@@ -83,13 +82,10 @@ public class EscolhaCachorroFragment extends Fragment {
     }
 
     private void configurarAdapter(List<Cachorro> listaCachorros) {
-        // Instancia o novo Adapter que criamos
         EscolhaCachorroAdapter adapter = new EscolhaCachorroAdapter(listaCachorros, cachorro -> {
 
-            // LOGICA PRINCIPAL: Salva a sessão definitiva com o ID do pet escolhido
             sessionManager.createLoginSession(tutorId, email, cachorro.getId());
 
-            // Navega para a Home
             Navigation.findNavController(requireView()).navigate(R.id.home);
 
             Toast.makeText(getContext(), "Perfil de " + cachorro.getNome() + " selecionado!", Toast.LENGTH_SHORT).show();
