@@ -1,6 +1,7 @@
 package com.example.escolaboaparacachorro;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,11 @@ public class LoginFragment extends Fragment {
             // Inicia o Login
             mAuth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    Log.d("DEBUG_LOGIN", "1. Firebase OK. Buscando tutor...");
                     verificarCachorrosDoTutor(email);
                 } else {
+                    Log.e("DEBUG_LOGIN", "Erro Firebase: " + task.getException().getMessage());
+
                     Toast.makeText(getContext(), "E-mail ou senha inválidos", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -75,8 +79,10 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<Tutor> call, @NonNull Response<Tutor> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("DEBUG_LOGIN", "2. Tutor encontrado: " + response.body().getId());
                     buscarListaDeCachorros(response.body().getId(), email);
                 } else {
+                    Log.e("DEBUG_LOGIN", "Erro API Tutor: Código " + response.code());
                     Toast.makeText(getContext(), "Erro ao buscar dados do tutor", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -88,10 +94,13 @@ public class LoginFragment extends Fragment {
     }
 
     private void buscarListaDeCachorros(Long tutorId, String email) {
+        Log.d("DEBUG_LOGIN", "CHEGOU NA BSUCA CACHORRO " );
         RetrofitClient.getInstance().getDadosCachorroPorIdTutor(tutorId).enqueue(new Callback<List<Cachorro>>() {
             @Override
             public void onResponse(@NonNull Call<List<Cachorro>> call, @NonNull Response<List<Cachorro>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+
+                    Log.d("DEBUG_LOGIN", "3. Lista de cachorros: " + response.body().size());
                     List<Cachorro> lista = response.body();
 
                     if (lista.isEmpty()) {
