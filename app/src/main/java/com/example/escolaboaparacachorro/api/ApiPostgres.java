@@ -6,13 +6,16 @@ import com.example.escolaboaparacachorro.model.Notas;
 import com.example.escolaboaparacachorro.model.Observacoes;
 import com.example.escolaboaparacachorro.model.Professor;
 import com.example.escolaboaparacachorro.model.Tutor;
+import com.example.escolaboaparacachorro.model.request.TutorRequest;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -28,8 +31,6 @@ public interface ApiPostgres {
     @GET("api/cao/buscarImagemPorCachorro/{id}")
     Call<Cachorro> getImagemCachorro(@Path("id") Long idCachorro);
 
-    @GET("api/cao/getIdTutorCachorro/{id}")
-    Call<Cachorro> getIdTutorCachorro(@Path("id") Long idCachorro);
 
     @GET("api/cao/buscarCachorroPorIdTutor/{id}")
     Call<List<Cachorro>> getDadosCachorroPorIdTutor(@Path("id") Long id);
@@ -38,6 +39,8 @@ public interface ApiPostgres {
     // --- Endpoints de Tutor ---
     @GET("api/tutor/buscarPorEmail/{email}")
     Call<Tutor> getDadosTutorEmail(@Path("email") String email);
+    @GET("api/tutor/buscarPorId/{id}")
+    Call<Tutor> getDadosTutorId(@Path("email") Long idTutor);
 
 
     // --- Endpoints de Observação ---
@@ -66,19 +69,25 @@ public interface ApiPostgres {
     Call<Professor> getImagemProfPorId(@Path("id") Long id);
 
 
-    // --- Endpoints de Atualização (PHP ou Legado) ---
-    // Nota: Verifique se esses arquivos PHP também ficam dentro de /api/cao/
-    @FormUrlEncoded
-    @POST("api/cao/atualizar_descricao.php")
-    Call<Void> atualizarDescricao(
-            @Field("id_pet") Long idPet,
-            @Field("descricao") String descricao
+    @GET("api/tutor/buscarPorId/{id}")
+    Call<Tutor> getTutorPorId(@Path("id") Long id);
+
+
+    @GET("api/cao/buscarTutorIdPorCachorro/{id}")
+    Call<Cachorro> getIdTutorCachorro(@Path("id") Long idCachorro);
+
+
+    @PATCH("api/tutor/atualizarImagem/{id}")
+    Call<Void> atualizarFotoTutor(
+            @Path("id") Long id,
+            @Body TutorRequest req
     );
 
-    @FormUrlEncoded
-    @POST("api/cao/atualizar_foto.php")
-    Call<Void> atualizarFoto(
-            @Field("id_pet") Long idPet,
-            @Field("url_foto") String urlFoto
+
+    @PATCH("api/tutor/atualizarDescricao/{id}")
+    Call<Void> atualizarDescricao(
+            @Path("id") Long id,
+            @Body TutorRequest req
     );
+
 }

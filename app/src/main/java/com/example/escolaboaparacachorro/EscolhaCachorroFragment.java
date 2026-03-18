@@ -44,11 +44,9 @@ public class EscolhaCachorroFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Inicializa as ferramentas
         apiPostgres = RetrofitClient.getInstance();
         sessionManager = new SessionManager(requireContext());
 
-        // Recupera os dados passados pelo LoginFragment
         if (getArguments() != null) {
             tutorId = getArguments().getLong("tutorId");
             email = getArguments().getString("email");
