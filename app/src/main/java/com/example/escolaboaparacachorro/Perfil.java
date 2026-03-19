@@ -85,109 +85,107 @@ public class Perfil extends Fragment {
             Log.d("PERFIL_DEBUG", "ID Pet Recebido: " + idPet);
         }
 
-        configurarInterface();
+       // configurarInterface();
         carregarDadosDoPerfil();
 
-        binding.editImg.setOnClickListener(v -> tirarFoto());
+       // binding.editImg.setOnClickListener(v -> tirarFoto());
 
     }
 
-    private void configurarInterface() {
-        if (modoEdicao) {
-            binding.viewFinder.setVisibility(View.VISIBLE);
-            binding.editImg.setVisibility(View.VISIBLE);
-            iniciarCameraX();
-        } else {
-            binding.viewFinder.setVisibility(View.GONE);
-            binding.editImg.setVisibility(View.GONE);
-        }
-    }
+//    private void configurarInterface() {
+//        if (modoEdicao) {
+//            binding.editImg.setVisibility(View.VISIBLE);
+//            iniciarCameraX();
+//        } else {
+//            binding.editImg.setVisibility(View.GONE);
+//        }
+//    }
 
-    private void iniciarCameraX() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                Preview preview = new Preview.Builder().build();
-                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+//    private void iniciarCameraX() {
+//        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+//        cameraProviderFuture.addListener(() -> {
+//            try {
+//                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+//                Preview preview = new Preview.Builder().build();
+//                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+//
+//                imageCapture = new ImageCapture.Builder()
+//                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
+//                        .build();
+//
+//                cameraProvider.unbindAll();
+//                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
+//            } catch (Exception e) {
+//                Log.e("CameraX", "Erro ao iniciar", e);
+//            }
+//        }, ContextCompat.getMainExecutor(requireContext()));
+//    }
 
-                imageCapture = new ImageCapture.Builder()
-                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
-                        .build();
+//    private void tirarFoto() {
+//        if (imageCapture == null) return;
+//
+//        // Se estiver editando o Tutor, a foto pode ser salva com o idTutor
+//        String fileName = (idTutor != null) ? "tutor_" + idTutor : "pet_" + idPet;
+//        File file = new File(requireContext().getExternalFilesDir(null), fileName + ".jpg");
+//        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
+//
+//        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
+//            @Override
+//            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
+//                Uri uri = Uri.fromFile(file);
+//                binding.imageView10.setImageURI(uri);
+//                fazerUploadFirebase(uri);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull ImageCaptureException exc) {
+//                if(isAdded()) Toast.makeText(getContext(), "Erro ao capturar foto", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
-                cameraProvider.unbindAll();
-                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
-            } catch (Exception e) {
-                Log.e("CameraX", "Erro ao iniciar", e);
-            }
-        }, ContextCompat.getMainExecutor(requireContext()));
-    }
+//    private void fazerUploadFirebase(Uri uri) {
+//        if (idTutor == null) return;
+//        if(isAdded()) Toast.makeText(getContext(), "Fazendo upload da foto...", Toast.LENGTH_SHORT).show();
+//
+//        StorageReference ref = storage.getReference().child("fotos_tutores/" + idTutor + ".jpg");
+//
+//        ref.putFile(uri).addOnSuccessListener(task -> {
+//            ref.getDownloadUrl().addOnSuccessListener(url -> {
+//                salvarLinkNoPostgres(url.toString());
+//            });
+//        }).addOnFailureListener(e -> {
+//            if(isAdded()) Toast.makeText(getContext(), "Falha no Firebase", Toast.LENGTH_SHORT).show();
+//        });
+//    }
 
-    private void tirarFoto() {
-        if (imageCapture == null) return;
-
-        // Se estiver editando o Tutor, a foto pode ser salva com o idTutor
-        String fileName = (idTutor != null) ? "tutor_" + idTutor : "pet_" + idPet;
-        File file = new File(requireContext().getExternalFilesDir(null), fileName + ".jpg");
-        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
-
-        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
-            @Override
-            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
-                Uri uri = Uri.fromFile(file);
-                binding.imageView10.setImageURI(uri);
-                fazerUploadFirebase(uri);
-            }
-
-            @Override
-            public void onError(@NonNull ImageCaptureException exc) {
-                if(isAdded()) Toast.makeText(getContext(), "Erro ao capturar foto", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void fazerUploadFirebase(Uri uri) {
-        if (idTutor == null) return;
-        if(isAdded()) Toast.makeText(getContext(), "Fazendo upload da foto...", Toast.LENGTH_SHORT).show();
-
-        StorageReference ref = storage.getReference().child("fotos_tutores/" + idTutor + ".jpg");
-
-        ref.putFile(uri).addOnSuccessListener(task -> {
-            ref.getDownloadUrl().addOnSuccessListener(url -> {
-                salvarLinkNoPostgres(url.toString());
-            });
-        }).addOnFailureListener(e -> {
-            if(isAdded()) Toast.makeText(getContext(), "Falha no Firebase", Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void salvarLinkNoPostgres(String url) {
-        TutorRequest request = new TutorRequest();
-        request.setImagem(url);
-
-        apiPostgres.atualizarFotoTutor(idTutor, request).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
-                    if (isAdded()) {
-                        Toast.makeText(getContext(), "Foto do perfil atualizada!", Toast.LENGTH_SHORT).show();
-
-                        Glide.with(Perfil.this)
-                                .load(url)
-                                .circleCrop()
-                                .into(binding.imageView12);
-                    }
-                } else {
-                    Log.e("API_ERROR", "Erro ao atualizar: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("API_ERROR", "Falha na conexão ao salvar link da foto", t);
-            }
-        });
-    }
+//    private void salvarLinkNoPostgres(String url) {
+//        TutorRequest request = new TutorRequest();
+//        request.setImagem(url);
+//
+//        apiPostgres.atualizarFotoTutor(idTutor, request).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    if (isAdded()) {
+//                        Toast.makeText(getContext(), "Foto do perfil atualizada!", Toast.LENGTH_SHORT).show();
+//
+//                        Glide.with(Perfil.this)
+//                                .load(url)
+//                                .circleCrop()
+//                                .into(binding.imageView12);
+//                    }
+//                } else {
+//                    Log.e("API_ERROR", "Erro ao atualizar: " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+//                Log.e("API_ERROR", "Falha na conexão ao salvar link da foto", t);
+//            }
+//        });
+//    }
 
 
     private void carregarDadosDoPerfil() {
@@ -232,15 +230,15 @@ public class Perfil extends Fragment {
                     Tutor tutor = response.body();
 
                     // Preenche os campos do tutor na tela
-                    binding.textView17.setText(tutor.getNome());
-                    binding.idade.setText(calcularIdade(tutor.getDataNascimento()) + " anos");
+                    binding.txtNomeTutor.setText(tutor.getNome());
+                    binding.txtIdadeTutor.setText(calcularIdade(tutor.getDataNascimento()) + " anos" );
 
                     if (isAdded()) {
                         Glide.with(Perfil.this)
                                 .load(tutor.getImagem())
                                 .circleCrop()
                                 .placeholder(R.drawable.ic_launcher_background)
-                                .into(binding.imageView12);
+                                .into(binding.imgTutor);
                     }
                 }
             }
@@ -253,16 +251,15 @@ public class Perfil extends Fragment {
     }
 
     private void preencherDadosCachorro(Cachorro cachorro) {
-        binding.nome.setText(cachorro.getNome());
-        binding.raca.setText(cachorro.getRaca());
+        binding.txtNomePet.setText(cachorro.getNome());
+        binding.racaidade.setText(calcularIdade(cachorro.getDataNascimento()) + " anos" + " * " +cachorro.getRaca());
         binding.sexo.setText(cachorro.getSexo());
         binding.turma.setText(cachorro.getTurma());
-        binding.idadecao.setText(calcularIdade(cachorro.getDataNascimento()) + " anos");
 
         Glide.with(requireContext())
                 .load(cachorro.getImagem())
                 .placeholder(R.drawable.ic_launcher_background)
-                .into(binding.imageView10);
+                .into(binding.imgPet);
 
     }
     private String calcularIdade(String dataNascString) {

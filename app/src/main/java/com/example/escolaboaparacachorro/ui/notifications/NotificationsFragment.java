@@ -67,7 +67,7 @@ public class NotificationsFragment extends Fragment {
                 androidx.navigation.Navigation.findNavController(v)
                         .navigate(R.id.perfilFragment, args);
             } else {
-                Toast.makeText(requireContext(), "Erro: ID do pet não encontrado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Erro: ID do pet não encontrado", Toast.LENGTH_SHORT).show();
             }
         });
 

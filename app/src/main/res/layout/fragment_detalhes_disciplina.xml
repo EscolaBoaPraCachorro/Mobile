@@ -1,148 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detalhesDisciplina"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F8F9FE"> <View
+    android:id="@+id/detalhesDisciplina"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
     android:background="#4232B2"
-    android:backgroundTint="#4232B2"
-    tools:context=".DetalhesDisciplina"
-    tools:layout_editor_absoluteX="-29dp"
-    tools:layout_editor_absoluteY="156dp">
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/view3"
-        android:layout_width="351dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="112dp"
-        android:background="#FF9800"
+    <ImageButton
+        android:id="@+id/voltar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/seta_comeback"
+        app:layout_constraintBottom_toTopOf="@+id/cardProfessor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/fotoProfessor"
-        android:layout_width="124dp"
-        android:layout_height="112dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/profeduble"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.159"
-        app:shapeAppearanceOverlay="@style/ImagemRedonda"
-        app:strokeColor="@color/white" />
-
-    <ImageView
-        android:id="@+id/voltar"
-        android:layout_width="49dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        android:rotation="180"
-        android:src="@drawable/seta_comeback"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:tint="@color/black" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/view4"
-        android:layout_width="128dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="14dp"
-        android:background="#8BC34A"
-        android:backgroundTint="#8BC34A"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view3">
+        android:id="@+id/cardProfessor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="80dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp">
 
-        <TextView
-            android:id="@+id/nomeDisciplina"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/josefin_sans"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:text="disciplina"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/fotoProfessor"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                tools:src="@tools:sample/avatars" />
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/fotoProfessor"
+                app:layout_constraintStart_toEndOf="@id/fotoProfessor"
+                app:layout_constraintTop_toTopOf="@id/fotoProfessor">
+
+                <TextView
+                    android:id="@+id/nomeProf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clebinho"
+                    android:textColor="#2D2D2D"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/idadeProf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="42 anos"
+                    android:textColor="#757575" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/nomeDisciplina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="Obediência"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotas"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/view3"
-        app:layout_constraintBottom_toTopOf="@+id/card2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toTopOf="@id/cardObs"
+        app:layout_constraintTop_toBottomOf="@id/cardProfessor"
         tools:listitem="@layout/card_nota" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card2"
-        android:layout_width="386dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="372dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#FFFFFF"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3">
-
-
-        <TextView
-            android:id="@+id/observacoes"
-            android:layout_width="342dp"
-            android:layout_height="135dp"
-            android:layout_marginTop="19dp"
-            android:fontFamily="@font/josefin_sans"
-            android:text="Observações"
-            android:textSize="20sp" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/nomeProf"
-        android:layout_width="82dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="124dp"
-        android:text="TextView"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="@+id/fotoProfessor"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/idadeProf"
-        android:layout_width="wrap_content"
+        android:id="@+id/cardObs"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="160dp"
-        android:text="TextView"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="@+id/fotoProfessor"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="20dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observações"
+                android:textColor="#4232B2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/observacoes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Resistência ao comando fica. Tem relação boa com outros cães."
+                android:textColor="#444444"
+                android:lineSpacingExtra="4dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

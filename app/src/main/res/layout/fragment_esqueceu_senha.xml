@@ -9,7 +9,7 @@
     android:background="#4232B2">
 
     <ImageButton
-        android:id="@+id/btnBack"
+        android:id="@+id/voltarPerfil"
         android:layout_width="76dp"
         android:layout_height="65dp"
         android:layout_marginStart="4dp"

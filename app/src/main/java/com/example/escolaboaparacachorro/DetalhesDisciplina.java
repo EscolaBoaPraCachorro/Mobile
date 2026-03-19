@@ -155,7 +155,7 @@ public class DetalhesDisciplina extends Fragment {
                 if (binding == null || !isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    String descricao = response.body().get(0).getDescricao();
+                    String descricao = response.body().toString();
                     Log.d("LOGDEBUG", "Descrição recebida: " + descricao);
                     binding.observacoes.setText(descricao);
                 } else {
