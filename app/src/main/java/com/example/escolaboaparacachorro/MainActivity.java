@@ -29,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.escolhaCachorro) {
-                binding.navView.setVisibility(View.GONE);
-            } else {
+            int id = destination.getId();
+
+            if (id == R.id.home ||
+                    id == R.id.boletim ||
+                    id == R.id.aumigos) {
+
                 binding.navView.setVisibility(View.VISIBLE);
+            } else {
+                binding.navView.setVisibility(View.GONE);
             }
         });
 

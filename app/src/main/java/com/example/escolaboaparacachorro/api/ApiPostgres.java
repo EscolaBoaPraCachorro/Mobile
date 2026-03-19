@@ -1,8 +1,7 @@
 package com.example.escolaboaparacachorro.api;
 
 import com.example.escolaboaparacachorro.model.Cachorro;
-import com.example.escolaboaparacachorro.model.Disciplinas;
-import com.example.escolaboaparacachorro.model.Notas;
+import com.example.escolaboaparacachorro.model.Nota;
 import com.example.escolaboaparacachorro.model.Observacoes;
 import com.example.escolaboaparacachorro.model.Professor;
 import com.example.escolaboaparacachorro.model.Tutor;
@@ -12,11 +11,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiPostgres {
@@ -26,10 +22,10 @@ public interface ApiPostgres {
     Call<List<Cachorro>> listarCachorros();
 
     @GET("api/cao/buscarCaoPorId/{id}")
-    Call<List<Cachorro>> getCachorroPorId(@Path("id") Long idCachorro);
+    Call<Cachorro> getCachorroPorId(@Path("id") Long idCachorro);
 
     @GET("api/cao/buscarImagemPorCachorro/{id}")
-    Call<Cachorro> getImagemCachorro(@Path("id") Long idCachorro);
+    Call<String> getImagemCachorro(@Path("id") Long idCachorro);
 
 
     @GET("api/cao/buscarCachorroPorIdTutor/{id}")
@@ -45,7 +41,7 @@ public interface ApiPostgres {
 
     // --- Endpoints de Observação ---
     @GET("api/observacao/buscarObservacaoPorIdCachorro/{idCachorro}/Disciplina/{idProfessor}")
-    Call<Observacoes> getObservacaoPorAlunoDisciplina(
+    Call<List<Observacoes>> getObservacaoPorAlunoDisciplina(
             @Path("idCachorro") Long idAluno,
             @Path("idProfessor") Long idProfessor
     );
@@ -53,7 +49,7 @@ public interface ApiPostgres {
 
     // --- Endpoints de Notas ---
     @GET("api/notas/buscarNotaPorIdCachorro/{idCachorro}/Disciplina/{idProfessor}")
-    Call<List<Notas>> getNotasPorAlunoDisciplina(
+    Call<List<Nota>> getNotasPorAlunoDisciplina(
             @Path("idCachorro") Long idAluno,
             @Path("idProfessor") Long idProfessor
     );
@@ -61,20 +57,24 @@ public interface ApiPostgres {
 
     // --- Endpoints de Disciplina ---
     @GET("api/disciplina/buscarIdProfessorPorDisciplina/{disciplina}")
-    Call<Disciplinas> getIdProfPorDisciplina(@Path("disciplina") String disciplina);
+    Call<Long> getIdProfPorDisciplina(@Path("disciplina") String disciplina);
 
 
     // --- Endpoints de Professor ---
     @GET("api/professor/buscarImagemProfessorPorId/{id}")
-    Call<Professor> getImagemProfPorId(@Path("id") Long id);
+    Call<String> getImagemProfPorId(@Path("id") Long id);
 
 
-    @GET("api/tutor/buscarPorId/{id}")
+    @GET("api/professor/buscarProfessorPorId/{id}")
+    Call<Professor> getProfPorId(@Path("id") Long id);
+
+
+    @GET("api/tutor/buscarTutorPorId/{id}")
     Call<Tutor> getTutorPorId(@Path("id") Long id);
 
 
     @GET("api/cao/buscarTutorIdPorCachorro/{id}")
-    Call<Cachorro> getIdTutorCachorro(@Path("id") Long idCachorro);
+    Call<Long> getIdTutorCachorro(@Path("id") Long idCachorro);
 
 
     @PATCH("api/tutor/atualizarImagem/{id}")

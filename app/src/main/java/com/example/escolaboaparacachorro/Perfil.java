@@ -89,21 +89,17 @@ public class Perfil extends Fragment {
         carregarDadosDoPerfil();
 
         binding.editImg.setOnClickListener(v -> tirarFoto());
-        binding.editDescr.setOnClickListener(v -> salvarDescricao());
+
     }
 
     private void configurarInterface() {
         if (modoEdicao) {
             binding.viewFinder.setVisibility(View.VISIBLE);
             binding.editImg.setVisibility(View.VISIBLE);
-            binding.descricao.setFocusableInTouchMode(true);
-            binding.editDescr.setVisibility(View.VISIBLE);
             iniciarCameraX();
         } else {
             binding.viewFinder.setVisibility(View.GONE);
             binding.editImg.setVisibility(View.GONE);
-            binding.descricao.setFocusable(false);
-            binding.editDescr.setVisibility(View.GONE);
         }
     }
 
@@ -193,61 +189,28 @@ public class Perfil extends Fragment {
         });
     }
 
-    private void salvarDescricao() {
-        if (idTutor == null) {
-            if (isAdded()) Toast.makeText(getContext(), "Aguarde carregar dados do tutor", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String novaDescricao = binding.descricao.getText().toString();
-
-        TutorRequest request = new TutorRequest();
-        request.setDescricao(novaDescricao);
-
-        apiPostgres.atualizarDescricao(idTutor, request).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
-                    if (isAdded()) {
-                        Toast.makeText(getContext(), "Descrição do tutor salva!", Toast.LENGTH_SHORT).show();
-                        Log.d("API_SUCCESS", "Tutor " + idTutor + " atualizado.");
-                    }
-                } else {
-                    Log.e("API_ERROR", "Código de erro: " + response.code());
-                    if (isAdded()) Toast.makeText(getContext(), "Erro ao salvar: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("API_FAILURE", "Falha na conexão: " + t.getMessage());
-                if (isAdded()) Toast.makeText(getContext(), "Erro de conexão com o servidor", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void carregarDadosDoPerfil() {
         if (idPet == null) return;
 
-        apiPostgres.getCachorroPorId(idPet).enqueue(new Callback<List<Cachorro>>() {
+        apiPostgres.getCachorroPorId(idPet).enqueue(new Callback<Cachorro>() {
             @Override
-            public void onResponse(@NonNull Call<List<Cachorro>> call, @NonNull Response<List<Cachorro>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    preencherDadosCachorro(response.body().get(0));
+            public void onResponse(@NonNull Call<Cachorro> call, @NonNull Response<Cachorro> response) {
+                if (response.isSuccessful() && response.body() != null ) {
+                    preencherDadosCachorro(response.body());
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<List<Cachorro>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Cachorro> call, @NonNull Throwable t) {
                 Log.e("API_ERROR", "Erro ao carregar pet", t);
             }
         });
 
-        apiPostgres.getIdTutorCachorro(idPet).enqueue(new Callback<Cachorro>() {
+        apiPostgres.getIdTutorCachorro(idPet).enqueue(new Callback<Long>() {
             @Override
-            public void onResponse(@NonNull Call<Cachorro> call, @NonNull Response<Cachorro> response) {
+            public void onResponse(@NonNull Call<Long> call, @NonNull Response<Long> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Aqui pegamos o ID do tutor que veio dentro do objeto Cachorro
-                    idTutor = response.body().getId();
+                    idTutor = response.body();
 
                     if (idTutor != null) {
                         buscarInformacoesDoTutor(idTutor);
@@ -255,7 +218,7 @@ public class Perfil extends Fragment {
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<Cachorro> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Long> call, @NonNull Throwable t) {
                 Log.e("API_ERROR", "Erro ao localizar ID do tutor", t);
             }
         });
@@ -270,7 +233,6 @@ public class Perfil extends Fragment {
 
                     // Preenche os campos do tutor na tela
                     binding.textView17.setText(tutor.getNome());
-                    binding.descricao.setText(tutor.getDescricao());
                     binding.idade.setText(calcularIdade(tutor.getDataNascimento()) + " anos");
 
                     if (isAdded()) {
@@ -295,13 +257,13 @@ public class Perfil extends Fragment {
         binding.raca.setText(cachorro.getRaca());
         binding.sexo.setText(cachorro.getSexo());
         binding.turma.setText(cachorro.getTurma());
+        binding.idadecao.setText(calcularIdade(cachorro.getDataNascimento()) + " anos");
 
-        if (isAdded()) {
-            Glide.with(Perfil.this)
-                    .load(cachorro.getImagem())
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(binding.imageView10);
-        }
+        Glide.with(requireContext())
+                .load(cachorro.getImagem())
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(binding.imageView10);
+
     }
     private String calcularIdade(String dataNascString) {
         if (dataNascString == null || dataNascString.isEmpty()) return "0";

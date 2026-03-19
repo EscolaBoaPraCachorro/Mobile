@@ -46,8 +46,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ImagemRedonda"
         app:strokeColor="@color/white"
-        app:strokeWidth="2dp"
-        tools:src="@tools:sample/avatars" />
+        tools:src="@drawable/cachorroduble" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardObediencia"

@@ -45,14 +45,13 @@
             android:layout_height="206dp"
             android:layout_marginTop="112dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/cachorroduble"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ImagemRedonda"
-            app:strokeColor="@color/white"
-            app:strokeWidth="5dp"
-            tools:src="@tools:sample/avatars" />
+            app:strokeColor="@color/white" />
         <androidx.camera.view.PreviewView
             android:id="@+id/viewFinder"
             android:layout_width="218dp"
@@ -70,6 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="140dp"
             android:text="Nome"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.093"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +78,8 @@
 
         <View
             android:id="@+id/view7"
-            android:layout_width="347dp"
-            android:layout_height="78dp"
+            android:layout_width="361dp"
+            android:layout_height="108dp"
             android:layout_marginTop="116dp"
             android:background="#377E37"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,13 +88,15 @@
             app:layout_constraintTop_toTopOf="@+id/view6" />
 
         <TextView
-            android:id="@+id/idade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/idadecao"
+            android:layout_width="68dp"
+            android:layout_height="30dp"
             android:layout_marginTop="140dp"
             android:text="idade"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.763"
+            app:layout_constraintHorizontal_bias="0.81"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view" />
 
@@ -111,8 +114,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView12"
-            android:layout_width="100dp"
-            android:layout_height="102dp"
+            android:layout_width="115dp"
+            android:layout_height="121dp"
             android:layout_marginTop="104dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
@@ -121,8 +124,7 @@
             app:layout_constraintTop_toTopOf="@+id/view2"
             app:shapeAppearanceOverlay="@style/ImagemRedonda"
             app:strokeColor="@color/white"
-            app:strokeWidth="5dp"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@drawable/tutorduble" />
 
         <View
             android:id="@+id/view5"
@@ -158,6 +160,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
             android:text="Turma"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.172"
             app:layout_constraintStart_toStartOf="parent"
@@ -169,6 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
             android:text="............."
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.177"
             app:layout_constraintStart_toStartOf="parent"
@@ -180,6 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
             android:text="............."
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.869"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,6 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
             android:text="............."
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -202,6 +209,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
             android:text="Raça"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.827"
             app:layout_constraintStart_toStartOf="parent"
@@ -213,42 +222,36 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
             android:text="Sexo"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
         <TextView
-            android:id="@+id/descricao"
-            android:layout_width="408dp"
-            android:layout_height="107dp"
-            android:layout_marginTop="96dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.13"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view7" />
-
-        <TextView
             android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="29dp"
             android:layout_marginStart="116dp"
             android:layout_marginTop="8dp"
             android:text="Nome"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.125"
             app:layout_constraintStart_toStartOf="@+id/imageView12"
             app:layout_constraintTop_toTopOf="@+id/view7" />
 
         <TextView
-            android:id="@+id/observacoes"
+            android:id="@+id/idade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
             android:layout_marginTop="44dp"
             android:text="xxx"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.131"
             app:layout_constraintStart_toStartOf="@+id/view7"
             app:layout_constraintTop_toTopOf="@+id/view7" />
 
@@ -259,9 +262,8 @@
             android:layout_marginStart="29dp"
             android:layout_marginTop="44dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.029"
-            app:layout_constraintStart_toStartOf="@+id/observacoes"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/idadecao"
             app:layout_constraintTop_toTopOf="@+id/view7" />
 
         <ImageView
@@ -274,17 +276,6 @@
             app:layout_constraintHorizontal_bias="0.757"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view" />
-
-        <ImageView
-            android:id="@+id/editDescr"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="52dp"
-            android:src="@drawable/edicao"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.931"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.escolaboaparacachorro.R;
-import com.example.escolaboaparacachorro.model.Notas;
+import com.example.escolaboaparacachorro.model.Nota;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 public class DetalhesNotasAdapter extends RecyclerView.Adapter<DetalhesNotasAdapter.NotasViewHolder> {
 
-    private List<Notas> listaNotas;
-    public DetalhesNotasAdapter(List<Notas> listaNotas){
+    private List<Nota> listaNotas;
+    public DetalhesNotasAdapter(List<Nota> listaNotas){
         this.listaNotas= listaNotas;
     }
 
@@ -32,24 +32,26 @@ public class DetalhesNotasAdapter extends RecyclerView.Adapter<DetalhesNotasAdap
 
     @Override
     public void onBindViewHolder(@NonNull DetalhesNotasAdapter.NotasViewHolder holder, int position) {
-        Notas notas = listaNotas.get(position);
+        Nota notaObjeto = listaNotas.get(position);
 
-        holder.valorNota.setText(notas.getNota());
+        holder.valorNota.setText(String.valueOf(notaObjeto.getNota()));
 
-        int numeroNota = position +1 ;
-        holder.notaN.setText("Nota " + numeroNota);
+        // Exibe "Nota 1", "Nota 2", etc.
+        int numeroPosicao = position + 1;
+        holder.notaN.setText("Nota " + numeroPosicao);
 
-        //logica backgrond do card
-        double nota = notas.getNota();
-        if (nota < 5.0) {
+        double valorNota = notaObjeto.getNota();
+
+        if (valorNota < 5.0) {
+            // Vermelho
             holder.card.setCardBackgroundColor(Color.parseColor("#E62B0D"));
-        } else if (nota < 7.0) {
+        } else if (valorNota < 7.0) {
+            // Amarelo/Laranja
             holder.card.setCardBackgroundColor(Color.parseColor("#FFC144"));
         } else {
+            // Verde
             holder.card.setCardBackgroundColor(Color.parseColor("#6ECB3A"));
         }
-
-
     }
 
 

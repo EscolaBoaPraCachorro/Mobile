@@ -2,6 +2,7 @@ package com.example.escolaboaparacachorro.ui.notifications;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.escolaboaparacachorro.Perfil;
 import com.example.escolaboaparacachorro.R;
 import com.example.escolaboaparacachorro.helpers.RetrofitClient;
@@ -46,6 +48,15 @@ public class NotificationsFragment extends Fragment {
         apiPostgres = RetrofitClient.getInstance();
         sessionManager = new SessionManager(requireContext());
 
+        Long idCachorroLogado = sessionManager.getDogId();
+
+
+        if (idCachorroLogado == null) {
+            Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         binding.perfil.setOnClickListener(v -> {
             Long dogId = sessionManager.getDogId();
             if (dogId != null ) {
@@ -63,6 +74,7 @@ public class NotificationsFragment extends Fragment {
         binding.rvAumigos.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         carregarListaAumigos();
+        carregarDadosCachorro(idCachorroLogado);
     }
 
     private void carregarListaAumigos() {
@@ -87,7 +99,7 @@ public class NotificationsFragment extends Fragment {
 
     private void configurarAdapter(List<Cachorro> listaAumigos) {
         AumigosAdapter adapter = new AumigosAdapter(listaAumigos, cachorro -> {
-            // Ao clicar em um aumigo da lista, abre o perfil em modo visualizaçO
+
             Bundle args = new Bundle();
             args.putLong("ID_PET", cachorro.getId());
             args.putBoolean("MODO_EDICAO", false);
@@ -98,6 +110,31 @@ public class NotificationsFragment extends Fragment {
         binding.rvAumigos.setAdapter(adapter);
 
 
+    }
+
+    private void carregarDadosCachorro(Long id) {
+        apiPostgres.getCachorroPorId(id).enqueue(new Callback<Cachorro>() {
+            @Override
+            public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
+                if (binding == null || !isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    Cachorro dog = response.body();
+
+                    Glide.with(requireContext())
+                            .load(dog.getImagem())
+                            .placeholder(R.drawable.cachorro)
+                            .into(binding.perfil);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Cachorro> call, Throwable t) {
+                Log.e("API_DEBUG", "Falha crítica: " + t.getMessage());
+                Toast.makeText(getContext(), "Erro ao conectar com servidor", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showError(String mensagem) {
