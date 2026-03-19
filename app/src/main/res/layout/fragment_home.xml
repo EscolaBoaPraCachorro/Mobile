@@ -46,8 +46,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ImagemRedonda"
         app:strokeColor="@color/white"
-        app:strokeWidth="2dp"
-        tools:src="@tools:sample/avatars" />
+        tools:src="@drawable/cachorroduble" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardObediencia"
@@ -68,7 +67,8 @@
             android:fontFamily="@font/itim"
             android:text="Obediência"
             android:textColor="#000000"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -89,7 +89,8 @@
             android:fontFamily="@font/itim"
             android:text="Socialização"
             android:textColor="#000000"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -111,7 +112,8 @@
             android:fontFamily="@font/itim"
             android:text="Autocontrole"
             android:textColor="#000000"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -132,7 +134,8 @@
             android:fontFamily="@font/itim"
             android:text="Trick Training"
             android:textColor="#000000"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -155,7 +158,8 @@
             android:gravity="center"
             android:text="Etiqueta\nde\npasseio"
             android:textColor="#000000"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

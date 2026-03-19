@@ -2,7 +2,7 @@ package com.example.escolaboaparacachorro.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Notas {
+public class Nota {
 
     private Long id;
     @SerializedName("id_cachorro")
@@ -12,7 +12,18 @@ public class Notas {
     private Integer nota;
     @SerializedName("data_publicacao")
     private String dataPublicacao;
-    public Notas(Integer nota) {
+
+    public Integer semestre;
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Nota(Integer nota) {
         this.nota = nota;
     }
 

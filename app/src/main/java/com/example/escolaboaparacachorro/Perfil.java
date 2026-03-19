@@ -23,6 +23,8 @@ import com.example.escolaboaparacachorro.api.ApiPostgres;
 import com.example.escolaboaparacachorro.helpers.RetrofitClient;
 import com.example.escolaboaparacachorro.databinding.FragmentPerfilBinding;
 import com.example.escolaboaparacachorro.model.Cachorro;
+import com.example.escolaboaparacachorro.model.Tutor;
+import com.example.escolaboaparacachorro.model.request.TutorRequest;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -37,14 +39,18 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public class Perfil extends Fragment {
 
     private FragmentPerfilBinding binding;
     private Long idPet;
+    private Long idTutor;
     private boolean modoEdicao;
     private ApiPostgres apiPostgres;
     private FirebaseStorage storage;
@@ -76,149 +82,190 @@ public class Perfil extends Fragment {
         if (getArguments() != null) {
             idPet = getArguments().getLong("ID_PET");
             modoEdicao = getArguments().getBoolean("MODO_EDICAO", false);
+            Log.d("PERFIL_DEBUG", "ID Pet Recebido: " + idPet);
         }
 
-        configurarInterface();
+       // configurarInterface();
         carregarDadosDoPerfil();
 
-        binding.editImg.setOnClickListener(v -> tirarFoto());
-        binding.editDescr.setOnClickListener(v -> salvarDescricao());
+       // binding.editImg.setOnClickListener(v -> tirarFoto());
+
     }
 
-    private void configurarInterface() {
-        if (modoEdicao) {
-            binding.viewFinder.setVisibility(View.VISIBLE);
-            binding.editImg.setVisibility(View.VISIBLE);
-            binding.descricao.setEnabled(true);
-            binding.editDescr.setVisibility(View.VISIBLE);
-            iniciarCameraX();
-        } else {
-            binding.viewFinder.setVisibility(View.GONE);
-            binding.editImg.setVisibility(View.GONE);
-            binding.descricao.setEnabled(false);
-            binding.editDescr.setVisibility(View.GONE);
-        }
-    }
+//    private void configurarInterface() {
+//        if (modoEdicao) {
+//            binding.editImg.setVisibility(View.VISIBLE);
+//            iniciarCameraX();
+//        } else {
+//            binding.editImg.setVisibility(View.GONE);
+//        }
+//    }
 
-    private void iniciarCameraX() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+//    private void iniciarCameraX() {
+//        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+//        cameraProviderFuture.addListener(() -> {
+//            try {
+//                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+//                Preview preview = new Preview.Builder().build();
+//                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+//
+//                imageCapture = new ImageCapture.Builder()
+//                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
+//                        .build();
+//
+//                cameraProvider.unbindAll();
+//                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
+//            } catch (Exception e) {
+//                Log.e("CameraX", "Erro ao iniciar", e);
+//            }
+//        }, ContextCompat.getMainExecutor(requireContext()));
+//    }
 
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                Preview preview = new Preview.Builder().build();
-                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+//    private void tirarFoto() {
+//        if (imageCapture == null) return;
+//
+//        // Se estiver editando o Tutor, a foto pode ser salva com o idTutor
+//        String fileName = (idTutor != null) ? "tutor_" + idTutor : "pet_" + idPet;
+//        File file = new File(requireContext().getExternalFilesDir(null), fileName + ".jpg");
+//        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
+//
+//        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
+//            @Override
+//            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
+//                Uri uri = Uri.fromFile(file);
+//                binding.imageView10.setImageURI(uri);
+//                fazerUploadFirebase(uri);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull ImageCaptureException exc) {
+//                if(isAdded()) Toast.makeText(getContext(), "Erro ao capturar foto", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
-                imageCapture = new ImageCapture.Builder()
-                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
-                        .build();
+//    private void fazerUploadFirebase(Uri uri) {
+//        if (idTutor == null) return;
+//        if(isAdded()) Toast.makeText(getContext(), "Fazendo upload da foto...", Toast.LENGTH_SHORT).show();
+//
+//        StorageReference ref = storage.getReference().child("fotos_tutores/" + idTutor + ".jpg");
+//
+//        ref.putFile(uri).addOnSuccessListener(task -> {
+//            ref.getDownloadUrl().addOnSuccessListener(url -> {
+//                salvarLinkNoPostgres(url.toString());
+//            });
+//        }).addOnFailureListener(e -> {
+//            if(isAdded()) Toast.makeText(getContext(), "Falha no Firebase", Toast.LENGTH_SHORT).show();
+//        });
+//    }
 
-                cameraProvider.unbindAll();
-                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
-            } catch (Exception e) {
-                Log.e("CameraX", "Erro ao iniciar", e);
-            }
-        }, ContextCompat.getMainExecutor(requireContext()));
-    }
+//    private void salvarLinkNoPostgres(String url) {
+//        TutorRequest request = new TutorRequest();
+//        request.setImagem(url);
+//
+//        apiPostgres.atualizarFotoTutor(idTutor, request).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    if (isAdded()) {
+//                        Toast.makeText(getContext(), "Foto do perfil atualizada!", Toast.LENGTH_SHORT).show();
+//
+//                        Glide.with(Perfil.this)
+//                                .load(url)
+//                                .circleCrop()
+//                                .into(binding.imageView12);
+//                    }
+//                } else {
+//                    Log.e("API_ERROR", "Erro ao atualizar: " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+//                Log.e("API_ERROR", "Falha na conexão ao salvar link da foto", t);
+//            }
+//        });
+//    }
 
-    private void tirarFoto() {
-        if (imageCapture == null) return;
-
-        File file = new File(requireContext().getExternalFilesDir(null), idPet + ".jpg");
-        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
-
-        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
-            @Override
-            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
-                Uri uri = Uri.fromFile(file);
-                binding.imageView10.setImageURI(uri);
-                fazerUploadFirebase(uri);
-            }
-
-            @Override
-            public void onError(@NonNull ImageCaptureException exc) {
-                Toast.makeText(getContext(), "Erro ao capturar foto", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void fazerUploadFirebase(Uri uri) {
-        Toast.makeText(getContext(), "Fazendo upload da foto...", Toast.LENGTH_SHORT).show();
-        StorageReference ref = storage.getReference().child("fotos_pets/" + idPet + ".jpg");
-
-        ref.putFile(uri).addOnSuccessListener(task -> {
-            ref.getDownloadUrl().addOnSuccessListener(url -> {
-                salvarLinkNoPostgres(url.toString());
-            });
-        }).addOnFailureListener(e -> Toast.makeText(getContext(), "Falha no Firebase", Toast.LENGTH_SHORT).show());
-    }
-
-    private void salvarLinkNoPostgres(String url) {
-        apiPostgres.atualizarFoto(idPet, url).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) Toast.makeText(getContext(), "Foto atualizada!", Toast.LENGTH_SHORT).show();
-            }
-            @Override public void onFailure(Call<Void> call, Throwable t) {}
-        });
-    }
-
-    private void salvarDescricao() {
-        String novaDescricao = binding.descricao.getText().toString();
-        apiPostgres.atualizarDescricao(idPet, novaDescricao).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) Toast.makeText(getContext(), "Descrição salva!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Erro ao salvar descrição", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void carregarDadosDoPerfil() {
-        apiPostgres.getCachorroPorId(idPet).enqueue(new Callback<List<Cachorro>>() {
+        if (idPet == null) return;
+
+        apiPostgres.getCachorroPorId(idPet).enqueue(new Callback<Cachorro>() {
             @Override
-            public void onResponse(Call<List<Cachorro>> call, Response<List<Cachorro>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    preencherDadosCachorro(response.body().get(0));
+            public void onResponse(@NonNull Call<Cachorro> call, @NonNull Response<Cachorro> response) {
+                if (response.isSuccessful() && response.body() != null ) {
+                    preencherDadosCachorro(response.body());
                 }
             }
             @Override
-            public void onFailure(Call<List<Cachorro>> call, Throwable t) {
+            public void onFailure(@NonNull Call<Cachorro> call, @NonNull Throwable t) {
                 Log.e("API_ERROR", "Erro ao carregar pet", t);
             }
         });
 
-        apiPostgres.getIdTutorCachorro(idPet).enqueue(new Callback<Cachorro>() {
+        apiPostgres.getIdTutorCachorro(idPet).enqueue(new Callback<Long>() {
             @Override
-            public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
+            public void onResponse(@NonNull Call<Long> call, @NonNull Response<Long> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Cachorro tutor = response.body();
-                    binding.textView17.setText(tutor.getNome());
-                    binding.idade.setText(calcularIdade(tutor.getDataNascimento()) + " anos");
-                    Glide.with(requireContext()).load(tutor.getImagem()).circleCrop().into(binding.imageView12);
+                    idTutor = response.body();
+
+                    if (idTutor != null) {
+                        buscarInformacoesDoTutor(idTutor);
+                    }
                 }
             }
             @Override
-            public void onFailure(Call<Cachorro> call, Throwable t) {}
+            public void onFailure(@NonNull Call<Long> call, @NonNull Throwable t) {
+                Log.e("API_ERROR", "Erro ao localizar ID do tutor", t);
+            }
+        });
+    }
+
+    private void buscarInformacoesDoTutor(Long id) {
+        apiPostgres.getTutorPorId(id).enqueue(new Callback<Tutor>() {
+            @Override
+            public void onResponse(@NonNull Call<Tutor> call, @NonNull Response<Tutor> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Tutor tutor = response.body();
+
+                    // Preenche os campos do tutor na tela
+                    binding.txtNomeTutor.setText(tutor.getNome());
+                    binding.txtIdadeTutor.setText(calcularIdade(tutor.getDataNascimento()) + " anos" );
+
+                    if (isAdded()) {
+                        Glide.with(Perfil.this)
+                                .load(tutor.getImagem())
+                                .circleCrop()
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .into(binding.imgTutor);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Tutor> call, @NonNull Throwable t) {
+                Log.e("API_ERROR", "Erro ao carregar dados detalhados do tutor", t);
+            }
         });
     }
 
     private void preencherDadosCachorro(Cachorro cachorro) {
-        binding.nome.setText(cachorro.getNome());
-        binding.raca.setText(cachorro.getRaca());
-       // binding.descricao.setText(cachorro.getDescricao());
+        binding.txtNomePet.setText(cachorro.getNome());
+        binding.racaidade.setText(calcularIdade(cachorro.getDataNascimento()) + " anos" + " * " +cachorro.getRaca());
+        binding.sexo.setText(cachorro.getSexo());
+        binding.turma.setText(cachorro.getTurma());
+
         Glide.with(requireContext())
                 .load(cachorro.getImagem())
                 .placeholder(R.drawable.ic_launcher_background)
-                .into(binding.imageView10);
-    }
+                .into(binding.imgPet);
 
+    }
     private String calcularIdade(String dataNascString) {
         if (dataNascString == null || dataNascString.isEmpty()) return "0";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String format = dataNascString.contains("-") ? "yyyy-MM-dd" : "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         try {
             Date dataNasc = sdf.parse(dataNascString);
             Calendar nasc = Calendar.getInstance();
@@ -227,7 +274,9 @@ public class Perfil extends Fragment {
             int idade = hoje.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
             if (hoje.get(Calendar.DAY_OF_YEAR) < nasc.get(Calendar.DAY_OF_YEAR)) idade--;
             return String.valueOf(Math.max(idade, 0));
-        } catch (ParseException e) { return "0"; }
+        } catch (ParseException e) {
+            return "0";
+        }
     }
 
     @Override

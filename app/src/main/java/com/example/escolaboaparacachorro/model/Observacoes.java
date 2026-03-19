@@ -5,19 +5,18 @@ import com.google.gson.annotations.SerializedName;
 public class Observacoes {
 
     private Long id;
+    @SerializedName("id_cachorro")
+    private Integer idCachorro;
+    @SerializedName("id_professor")
+    private Integer idProfessor;
+
+    private String descricao;
 
     @SerializedName("data_publicacao")
     private String dataPublicacao;
 
-    private String descricao;
 
-    @SerializedName("id_cachorro")
-    private Integer idCachorro;
 
-    @SerializedName("id_professor")
-    private Integer idProfessor;
-
-    private String nome;
 
     public Long getId() {
         return id;
@@ -59,11 +58,4 @@ public class Observacoes {
         this.idProfessor = idProfessor;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }

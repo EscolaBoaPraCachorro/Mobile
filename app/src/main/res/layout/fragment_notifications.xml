@@ -9,18 +9,17 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/perfil"
-        android:layout_width="79dp"
-        android:layout_height="75dp"
+        android:layout_width="80dp"
+        android:layout_height="81dp"
         android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cachorroduble"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.947"
-        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ImagemRedonda"
-        app:strokeColor="@color/white"
-        app:strokeWidth="3dp"
-        tools:src="@tools:sample/avatars" />
+        app:strokeColor="@color/white" />
 
     <TextView
         android:id="@+id/textView6"
@@ -30,7 +29,8 @@
         android:fontFamily="@font/itim"
         android:text="AUmigos"
         android:textColor="#FFFFFF"
-        android:textSize="28sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/perfil"
         app:layout_constraintHorizontal_bias="0.665"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,13 +38,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAumigos"
-        android:layout_width="400dp"
-        android:layout_height="613dp"
+        android:layout_width="372dp"
+        android:layout_height="567dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.871"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ImagemRedonda" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

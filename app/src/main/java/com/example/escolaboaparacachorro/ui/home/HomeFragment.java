@@ -1,6 +1,7 @@
 package com.example.escolaboaparacachorro.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,27 +50,44 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
             return;
         }
+        binding.perfil3.setOnClickListener(v -> {
+            Long dogId = sessionManager.getDogId();
+            if (dogId != null ) {
+                Bundle args = new Bundle();
+                args.putLong("ID_PET", dogId);
+                args.putBoolean("MODO_EDICAO", false);
+
+                androidx.navigation.Navigation.findNavController(v)
+                        .navigate(R.id.perfilFragment, args);
+            } else {
+                Toast.makeText(requireContext(), "Erro: ID do pet não encontrado", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         carregarDadosCachorro(idCachorroLogado);
-
-
         configurarCliquesMaterias();
     }
 
     private void carregarDadosCachorro(Long id) {
-
-        apiPostgres.getImagemCachorro(id).enqueue(new Callback<Cachorro>() {
+        apiPostgres.getCachorroPorId(id).enqueue(new Callback<Cachorro>() {
             @Override
             public void onResponse(Call<Cachorro> call, Response<Cachorro> response) {
+                if (binding == null || !isAdded()) return;
+
                 if (response.isSuccessful() && response.body() != null) {
+                    Cachorro dog = response.body();
+
                     Glide.with(requireContext())
-                            .load(response.body().getImagem())
+                            .load(dog.getImagem())
+                            .placeholder(R.drawable.cachorro)
                             .into(binding.perfil3);
+
                 }
             }
 
             @Override
             public void onFailure(Call<Cachorro> call, Throwable t) {
+                Log.e("API_DEBUG", "Falha crítica: " + t.getMessage());
                 Toast.makeText(getContext(), "Erro ao conectar com servidor", Toast.LENGTH_SHORT).show();
             }
         });
@@ -81,10 +99,10 @@ public class HomeFragment extends Fragment {
             int id = v.getId();
 
             if (id == R.id.cardObediencia) nome = "Obediência";
-            else if (id == R.id.cardSocializacao) nome = "Socialização";
-            else if (id == R.id.cardAutocontrole) nome = "Autocontrole";
-            else if (id == R.id.cardTrick) nome = "Trick";
-            else if (id == R.id.cardEtiqueta) nome = "Etiqueta";
+            else if (id == R.id.cardSocializacao) nome = "socialização";
+            else if (id == R.id.cardAutocontrole) nome = "autocontrole";
+            else if (id == R.id.cardTrick) nome = "trick training";
+            else if (id == R.id.cardEtiqueta) nome = "etiqueta de passeio";
 
             if (nome != null) {
                 navegarParaDetalhes(nome);
@@ -106,6 +124,7 @@ public class HomeFragment extends Fragment {
         androidx.navigation.Navigation.findNavController(requireView())
                 .navigate(R.id.detalhesDisciplina, bundle);
     }
+
 
     @Override
     public void onDestroyView() {
