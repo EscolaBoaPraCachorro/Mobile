@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#4C39BE"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Boletim"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:stretchColumns="0">
+
+        <TableRow android:background="#A0A0A0">
+
+            <TextView
+                android:padding="8dp"
+                android:text="Matéria"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="1º"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="2º"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Média"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Final"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Obediência" android:padding="8dp" android:textColor="#000"/>
+            <TextView android:text="5" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="8" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="7,6" android:gravity="center" android:padding="8dp" android:textStyle="bold" android:background="#F0F0F0"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Trick Training" android:padding="8dp" android:textColor="#000"/>
+            <TextView android:text="9" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="9" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="9,33" android:gravity="center" android:padding="8dp" android:textStyle="bold" android:background="#F0F0F0"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Autocontrole" android:padding="8dp" android:textColor="#000"/>
+            <TextView android:text="7,5" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="9" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="8,83" android:gravity="center" android:padding="8dp" android:textStyle="bold" android:background="#F0F0F0"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Etiqueta" android:padding="8dp" android:textColor="#000"/>
+            <TextView android:text="0" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="5" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="5" android:gravity="center" android:padding="8dp" android:textStyle="bold" android:background="#F0F0F0"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Socialização" android:padding="8dp" android:textColor="#000"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10" android:gravity="center" android:padding="8dp"/>
+            <TextView android:text="10.0" android:gravity="center" android:padding="8dp" android:textStyle="bold" android:background="#F0F0F0"/>
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

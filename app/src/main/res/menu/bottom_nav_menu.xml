@@ -3,15 +3,15 @@
     <item
         android:id="@+id/boletim"
         android:title="Boletim"
-        android:icon="@drawable/boletim_off" />
+        android:icon="@drawable/selector_boletim" />
 
     <item
         android:id="@+id/home"
         android:title="Home"
-        android:icon="@drawable/home_off" />
+        android:icon="@drawable/selector_home" />
 
     <item
         android:id="@+id/aumigos"
         android:title="Aumigos"
-        android:icon="@drawable/aumigos_off" />
+        android:icon="@drawable/selector_aumigos" />
 </menu>

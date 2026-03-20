@@ -17,11 +17,13 @@ import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.escolaboaparacachorro.api.ApiPostgres;
 import com.example.escolaboaparacachorro.helpers.RetrofitClient;
 import com.example.escolaboaparacachorro.databinding.FragmentPerfilBinding;
+import com.example.escolaboaparacachorro.helpers.SessionManager;
 import com.example.escolaboaparacachorro.model.Cachorro;
 import com.example.escolaboaparacachorro.model.Tutor;
 import com.example.escolaboaparacachorro.model.request.TutorRequest;
@@ -56,6 +58,7 @@ public class Perfil extends Fragment {
     private FirebaseStorage storage;
     private ImageCapture imageCapture;
     private ExecutorService cameraExecutor;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,10 +77,18 @@ public class Perfil extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        sessionManager = new SessionManager(requireContext());
         binding.voltarPerfil.setOnClickListener(v ->
                 androidx.navigation.Navigation.findNavController(v).navigateUp()
         );
+        view.findViewById(R.id.btnLogout).setOnClickListener(v -> {
+            sessionManager.logout();
+            Navigation.findNavController(requireView())
+                    .navigate(R.id.loginFragment);
+
+            Toast.makeText(requireContext(), "Até logo!", Toast.LENGTH_SHORT).show();
+        });
+
 
         if (getArguments() != null) {
             idPet = getArguments().getLong("ID_PET");
@@ -85,7 +96,7 @@ public class Perfil extends Fragment {
             Log.d("PERFIL_DEBUG", "ID Pet Recebido: " + idPet);
         }
 
-       // configurarInterface();
+       configurarInterface();
         carregarDadosDoPerfil();
 
        // binding.editImg.setOnClickListener(v -> tirarFoto());
@@ -100,6 +111,14 @@ public class Perfil extends Fragment {
 //            binding.editImg.setVisibility(View.GONE);
 //        }
 //    }
+
+    private void configurarInterface() {
+        if (modoEdicao) {
+            binding.btnLogout.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnLogout.setVisibility(View.GONE);
+        }
+    }
 
 //    private void iniciarCameraX() {
 //        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
@@ -253,8 +272,13 @@ public class Perfil extends Fragment {
     private void preencherDadosCachorro(Cachorro cachorro) {
         binding.txtNomePet.setText(cachorro.getNome());
         binding.racaidade.setText(calcularIdade(cachorro.getDataNascimento()) + " anos" + " * " +cachorro.getRaca());
-        binding.sexo.setText(cachorro.getSexo());
-        binding.turma.setText(cachorro.getTurma());
+        if (cachorro.getSexo()== "M"){
+            binding.sexo.setText(cachorro.getSexo()+"acho");
+        }
+        else {
+            binding.sexo.setText(cachorro.getSexo()+"êmea");
+        }
+        binding.turma.setText("Turma "+cachorro.getTurma());
 
         Glide.with(requireContext())
                 .load(cachorro.getImagem())
