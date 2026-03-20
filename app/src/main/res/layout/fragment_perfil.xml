@@ -21,12 +21,6 @@
             android:src="@drawable/dogduble"
             tools:srcCompat="@drawable/dogduble" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:alpha="0.2"
-            android:background="@android:drawable/screen_background_dark_transparent" />
-
         <ImageButton
             android:id="@+id/voltarPerfil"
             android:layout_width="48dp"
@@ -35,7 +29,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Voltar"
             android:src="?attr/homeAsUpIndicator"
-            app:tint="@color/black" />
+            app:tint="#090909" />
 
     </androidx.cardview.widget.CardView>
 
@@ -43,36 +37,59 @@
         android:id="@+id/containerInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/shape_rounded_top"
         android:backgroundTint="#FFFFFF"
         android:orientation="vertical"
         android:padding="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardFotoPet">
 
-        <TextView
-            android:id="@+id/txtNomePet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cural da Silva"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FAF7F7"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtNomePet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Nome"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnLogout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="60dp"
+                android:layout_height="65dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/txtNomePet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtNomePet"
+                app:srcCompat="@drawable/common_full_open_on_phone"
+                app:tint="#FFFFFF" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/racaidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3 anos • Golden Retriever"
+            android:text="Idade anos • Raça"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <com.google.android.material.chip.ChipGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="401dp"
+            android:layout_height="62dp"
             android:layout_marginTop="20dp"
             app:chipSpacingHorizontal="8dp">
 
@@ -80,7 +97,8 @@
                 android:id="@+id/turma"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sala 1"
+                android:text=" TURMA"
+                android:textSize="16sp"
                 app:chipBackgroundColor="#E8F5E9"
                 app:chipIcon="@android:drawable/ic_menu_myplaces"
                 app:chipIconTint="#4CAF50" />
@@ -89,15 +107,10 @@
                 android:id="@+id/sexo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Macho"
+                android:text="MACHO"
                 app:chipBackgroundColor="#E3F2FD"
                 app:chipIconTint="#2196F3" />
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SRD"
-                app:chipBackgroundColor="#F5F5F5" />
         </com.google.android.material.chip.ChipGroup>
 
         <View
@@ -111,7 +124,7 @@
             android:layout_height="wrap_content"
             android:text="RESPONSÁVEL"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,8 +134,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgTutor"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="101dp"
+                android:layout_height="95dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,10 +147,10 @@
                 android:id="@+id/txtNomeTutor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:text="Jorge da Silva"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/txtIdadeTutor"
                 app:layout_constraintStart_toEndOf="@id/imgTutor"
@@ -149,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="30 anos"
                 android:textColor="#FFFFFF"
+                android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="@id/imgTutor"
                 app:layout_constraintStart_toStartOf="@id/txtNomeTutor"
                 app:layout_constraintTop_toBottomOf="@id/txtNomeTutor" />

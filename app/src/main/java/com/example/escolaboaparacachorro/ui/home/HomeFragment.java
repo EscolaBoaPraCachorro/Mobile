@@ -46,10 +46,10 @@ public class HomeFragment extends Fragment {
         idCachorroLogado = sessionManager.getDogId();
 
 
-        if (idCachorroLogado == null) {
-            Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (idCachorroLogado == null) {
+//            Toast.makeText(getContext(), "Usuário não identificado", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         binding.perfil3.setOnClickListener(v -> {
             Long dogId = sessionManager.getDogId();
             if (dogId != null ) {
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<Cachorro> call, Throwable t) {
                 Log.e("API_DEBUG", "Falha crítica: " + t.getMessage());
-                Toast.makeText(getContext(), "Erro ao conectar com servidor", Toast.LENGTH_SHORT).show();
+              // Toast.makeText(getContext(), "Erro ao conectar com servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -3,6 +3,7 @@ package com.example.escolaboaparacachorro;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,17 +18,20 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-            startActivity(intent);
+
+        VideoView videoView = findViewById(R.id.videoSplash);
+
+        // Caminho do vídeo na pasta raw
+        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.splash;
+        videoView.setVideoPath(videoPath);
+
+        // Quando o vídeo terminar, pula para a próxima tela
+        videoView.setOnCompletionListener(mp -> {
+            startActivity(new Intent(SplashScreen.this, MainActivity.class));
             finish();
-        }, 10000);
+        });
+
+        videoView.start();
     }
 }

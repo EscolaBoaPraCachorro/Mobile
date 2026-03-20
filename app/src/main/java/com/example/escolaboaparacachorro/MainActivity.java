@@ -1,5 +1,7 @@
 package com.example.escolaboaparacachorro;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int id = destination.getId();
+            binding.navView.setItemIconTintList(null);
 
             if (id == R.id.home ||
                     id == R.id.boletim ||

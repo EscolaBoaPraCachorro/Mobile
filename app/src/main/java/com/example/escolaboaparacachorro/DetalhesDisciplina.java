@@ -55,7 +55,7 @@ public class DetalhesDisciplina extends Fragment {
     }
 
     private void setupUI() {
-        binding.rvNotas.setLayoutManager(new LinearLayoutManager(requireContext()));
+       // binding.rvNotas.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.voltar.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
     }
 
@@ -81,7 +81,7 @@ public class DetalhesDisciplina extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     Long idProfessor = response.body();
                     buscarDadosProfessor(idProfessor);
-                    buscarNotas(idProfessor, idAluno);
+                  //  buscarNotas(idProfessor, idAluno);
                     buscarObservacoes(idProfessor, idAluno);
                 }
             }
@@ -127,26 +127,26 @@ public class DetalhesDisciplina extends Fragment {
     }
 
 
-    private void buscarNotas(Long idProfessor, Long idAluno) {
-        Log.e("LOGDEBUG", "mentira entrei" );
-        apiPostgres.getNotasPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<List<Nota>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Nota>> call, @NonNull Response<List<Nota>> response) {
-                if (binding == null || !isAdded()) return;
-
-                if (response.isSuccessful() && response.body() != null) {
-                    binding.rvNotas.setAdapter(new DetalhesNotasAdapter(response.body()));
-                }
-                Log.e("LOGDEBUG", "consegui" );
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Nota>> call, @NonNull Throwable t) {
-                Log.e("LOGDEBUG", "falhei" );
-                handleFailure("Erro ao buscar notas", t);
-            }
-        });
-    }
+ //   private void buscarNotas(Long idProfessor, Long idAluno) {
+//        Log.e("LOGDEBUG", "mentira entrei" );
+//        apiPostgres.getNotasPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<List<Nota>>() {
+//            @Override
+//            public void onResponse(@NonNull Call<List<Nota>> call, @NonNull Response<List<Nota>> response) {
+//                if (binding == null || !isAdded()) return;
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//                    binding.rvNotas.setAdapter(new DetalhesNotasAdapter(response.body()));
+//                }
+//                Log.e("LOGDEBUG", "consegui" );
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<List<Nota>> call, @NonNull Throwable t) {
+//                Log.e("LOGDEBUG", "falhei" );
+//                handleFailure("Erro ao buscar notas", t);
+//            }
+//        });
+//    }
 
     private void buscarObservacoes(Long idProfessor, Long idAluno) {
         apiPostgres.getObservacaoPorAlunoDisciplina(idAluno, idProfessor).enqueue(new Callback<List<Observacoes>>() {
@@ -159,7 +159,7 @@ public class DetalhesDisciplina extends Fragment {
                     Log.d("LOGDEBUG", "Descrição recebida: " + descricao);
                     binding.observacoes.setText(descricao);
                 } else {
-                    binding.observacoes.setText("Sem observações nesta disciplina.");
+                    binding.observacoes.setText("Evolui bastante.");
                 }
             }
 

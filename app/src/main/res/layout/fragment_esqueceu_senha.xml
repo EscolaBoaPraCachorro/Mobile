@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/seta_comeback"
-        app:tint="@null" />
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/imgCachorroTriste"

@@ -5,28 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FE"> <View
-    android:id="@+id/detalhesDisciplina"
-    android:layout_width="match_parent"
-    android:layout_height="220dp"
-    android:background="#4232B2"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:background="#F8F9FE">
 
-    <ImageButton
-        android:id="@+id/voltar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/seta_comeback"
-        app:layout_constraintBottom_toTopOf="@+id/cardProfessor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black" />
+    <View
+        android:id="@+id/detalhesDisciplina"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#4232B2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardProfessor"
@@ -36,8 +22,7 @@
         android:layout_marginTop="80dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,8 +31,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/fotoProfessor"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="78dp"
+                android:layout_height="79dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +52,7 @@
                     android:id="@+id/nomeProf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Clebinho"
+                    android:text="Nome"
                     android:textColor="#2D2D2D"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -76,19 +61,21 @@
                     android:id="@+id/idadeProf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="42 anos"
-                    android:textColor="#757575" />
+                    android:text="XX anos"
+                    android:textColor="#757575"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/nomeDisciplina"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="52dp"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:text="Obediência"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
+                android:textColor="#000000"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,15 +83,154 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvNotas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="412dp"
+        android:layout_height="334dp"
         android:layout_marginTop="16dp"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintBottom_toTopOf="@id/cardObs"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardProfessor"
-        tools:listitem="@layout/card_nota" />
+        app:layout_constraintVertical_bias="0.142">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="#D9D9D9"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="370dp"
+                    android:layout_height="85dp"
+                    android:background="#4CAF50"
+                    android:backgroundTint="#4CAF50"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/josefin_sans"
+                        android:text="NOTA 3"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="107dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#8F4CAF50"
+                            android:gravity="center"
+                            android:text="10"
+                            android:textSize="20sp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="#D9D9D9"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:background="#4CAF50"
+                    android:backgroundTint="#4CAF50"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/josefin_sans"
+                        android:text="NOTA 2"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="107dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#904CAF50"
+                            android:gravity="center"
+                            android:text="9.0"
+                            android:textSize="20sp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="#D9D9D9"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:background="#FFC107"
+                    android:backgroundTint="#FFC107"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/josefin_sans"
+                        android:text="NOTA 1"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="107dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#85FFC107"
+                            android:gravity="center"
+                            android:text="7.5"
+                            android:textSize="20sp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardObs"
@@ -115,29 +241,50 @@
         app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/voltar"
+        android:layout_width="68dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="8dp"
+        android:rotationY="-180"
+        android:tint="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/detalhesDisciplina"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/seta_comeback" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.88">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Observações"
+            android:textColor="#4232B2"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/observacoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Observações"
-                android:textColor="#4232B2"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/observacoes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Resistência ao comando fica. Tem relação boa com outros cães."
-                android:textColor="#444444"
-                android:lineSpacingExtra="4dp" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp"
+            android:text="Evolui Bastante"
+            android:textColor="#444444"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
