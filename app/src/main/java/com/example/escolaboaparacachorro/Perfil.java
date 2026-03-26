@@ -55,17 +55,12 @@ public class Perfil extends Fragment {
     private Long idTutor;
     private boolean modoEdicao;
     private ApiPostgres apiPostgres;
-    private FirebaseStorage storage;
-    private ImageCapture imageCapture;
-    private ExecutorService cameraExecutor;
     private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiPostgres = RetrofitClient.getInstance();
-        storage = FirebaseStorage.getInstance();
-        cameraExecutor = Executors.newSingleThreadExecutor();
     }
 
     @Override
@@ -99,18 +94,8 @@ public class Perfil extends Fragment {
        configurarInterface();
         carregarDadosDoPerfil();
 
-       // binding.editImg.setOnClickListener(v -> tirarFoto());
 
     }
-
-//    private void configurarInterface() {
-//        if (modoEdicao) {
-//            binding.editImg.setVisibility(View.VISIBLE);
-//            iniciarCameraX();
-//        } else {
-//            binding.editImg.setVisibility(View.GONE);
-//        }
-//    }
 
     private void configurarInterface() {
         if (modoEdicao) {
@@ -119,92 +104,6 @@ public class Perfil extends Fragment {
             binding.btnLogout.setVisibility(View.GONE);
         }
     }
-
-//    private void iniciarCameraX() {
-//        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
-//        cameraProviderFuture.addListener(() -> {
-//            try {
-//                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-//                Preview preview = new Preview.Builder().build();
-//                preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
-//
-//                imageCapture = new ImageCapture.Builder()
-//                        .setTargetRotation(requireActivity().getWindowManager().getDefaultDisplay().getRotation())
-//                        .build();
-//
-//                cameraProvider.unbindAll();
-//                cameraProvider.bindToLifecycle(getViewLifecycleOwner(), CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
-//            } catch (Exception e) {
-//                Log.e("CameraX", "Erro ao iniciar", e);
-//            }
-//        }, ContextCompat.getMainExecutor(requireContext()));
-//    }
-
-//    private void tirarFoto() {
-//        if (imageCapture == null) return;
-//
-//        // Se estiver editando o Tutor, a foto pode ser salva com o idTutor
-//        String fileName = (idTutor != null) ? "tutor_" + idTutor : "pet_" + idPet;
-//        File file = new File(requireContext().getExternalFilesDir(null), fileName + ".jpg");
-//        ImageCapture.OutputFileOptions options = new ImageCapture.OutputFileOptions.Builder(file).build();
-//
-//        imageCapture.takePicture(options, ContextCompat.getMainExecutor(requireContext()), new ImageCapture.OnImageSavedCallback() {
-//            @Override
-//            public void onImageSaved(@NonNull ImageCapture.OutputFileResults results) {
-//                Uri uri = Uri.fromFile(file);
-//                binding.imageView10.setImageURI(uri);
-//                fazerUploadFirebase(uri);
-//            }
-//
-//            @Override
-//            public void onError(@NonNull ImageCaptureException exc) {
-//                if(isAdded()) Toast.makeText(getContext(), "Erro ao capturar foto", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
-//    private void fazerUploadFirebase(Uri uri) {
-//        if (idTutor == null) return;
-//        if(isAdded()) Toast.makeText(getContext(), "Fazendo upload da foto...", Toast.LENGTH_SHORT).show();
-//
-//        StorageReference ref = storage.getReference().child("fotos_tutores/" + idTutor + ".jpg");
-//
-//        ref.putFile(uri).addOnSuccessListener(task -> {
-//            ref.getDownloadUrl().addOnSuccessListener(url -> {
-//                salvarLinkNoPostgres(url.toString());
-//            });
-//        }).addOnFailureListener(e -> {
-//            if(isAdded()) Toast.makeText(getContext(), "Falha no Firebase", Toast.LENGTH_SHORT).show();
-//        });
-//    }
-
-//    private void salvarLinkNoPostgres(String url) {
-//        TutorRequest request = new TutorRequest();
-//        request.setImagem(url);
-//
-//        apiPostgres.atualizarFotoTutor(idTutor, request).enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-//                if (response.isSuccessful()) {
-//                    if (isAdded()) {
-//                        Toast.makeText(getContext(), "Foto do perfil atualizada!", Toast.LENGTH_SHORT).show();
-//
-//                        Glide.with(Perfil.this)
-//                                .load(url)
-//                                .circleCrop()
-//                                .into(binding.imageView12);
-//                    }
-//                } else {
-//                    Log.e("API_ERROR", "Erro ao atualizar: " + response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-//                Log.e("API_ERROR", "Falha na conexão ao salvar link da foto", t);
-//            }
-//        });
-//    }
 
 
     private void carregarDadosDoPerfil() {
@@ -306,7 +205,5 @@ public class Perfil extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (cameraExecutor != null) cameraExecutor.shutdown();
-        binding = null;
     }
 }

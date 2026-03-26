@@ -50,13 +50,9 @@ public class DetalhesDisciplina extends Fragment {
         apiPostgres = RetrofitClient.getInstance();
         sessionManager = new SessionManager(requireContext());
 
-        setupUI();
-        processArguments();
-    }
-
-    private void setupUI() {
-       // binding.rvNotas.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.rvnotas.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.voltar.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
+        processArguments();
     }
 
     private void processArguments() {
@@ -81,7 +77,7 @@ public class DetalhesDisciplina extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     Long idProfessor = response.body();
                     buscarDadosProfessor(idProfessor);
-                  //  buscarNotas(idProfessor, idAluno);
+                    buscarNotas(idProfessor, idAluno);
                     buscarObservacoes(idProfessor, idAluno);
                 }
             }
@@ -127,26 +123,26 @@ public class DetalhesDisciplina extends Fragment {
     }
 
 
- //   private void buscarNotas(Long idProfessor, Long idAluno) {
-//        Log.e("LOGDEBUG", "mentira entrei" );
-//        apiPostgres.getNotasPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<List<Nota>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<Nota>> call, @NonNull Response<List<Nota>> response) {
-//                if (binding == null || !isAdded()) return;
-//
-//                if (response.isSuccessful() && response.body() != null) {
-//                    binding.rvNotas.setAdapter(new DetalhesNotasAdapter(response.body()));
-//                }
-//                Log.e("LOGDEBUG", "consegui" );
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<Nota>> call, @NonNull Throwable t) {
-//                Log.e("LOGDEBUG", "falhei" );
-//                handleFailure("Erro ao buscar notas", t);
-//            }
-//        });
-//    }
+    private void buscarNotas(Long idProfessor, Long idAluno) {
+        Log.e("LOGDEBUG", "mentira entrei" );
+        apiPostgres.getNotasPorAlunoDisciplina(idProfessor, idAluno).enqueue(new Callback<List<Nota>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Nota>> call, @NonNull Response<List<Nota>> response) {
+                if (binding == null || !isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    binding.rvnotas.setAdapter(new DetalhesNotasAdapter(response.body()));
+                }
+                Log.e("LOGDEBUG", "consegui" );
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Nota>> call, @NonNull Throwable t) {
+                Log.e("LOGDEBUG", "falhei" );
+                handleFailure("Erro ao buscar notas", t);
+            }
+        });
+    }
 
     private void buscarObservacoes(Long idProfessor, Long idAluno) {
         apiPostgres.getObservacaoPorAlunoDisciplina(idAluno, idProfessor).enqueue(new Callback<List<Observacoes>>() {
@@ -157,9 +153,7 @@ public class DetalhesDisciplina extends Fragment {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     String descricao = response.body().toString();
                     Log.d("LOGDEBUG", "Descrição recebida: " + descricao);
-                    binding.observacoes.setText(descricao);
-                } else {
-                    binding.observacoes.setText("Evolui bastante.");
+                    binding.observacoes.setText(descricao.toString().trim());
                 }
             }
 
@@ -174,7 +168,6 @@ public class DetalhesDisciplina extends Fragment {
     }
     private int calcularIdade(String dataNascimento) {
         try {
-            // Espera formato "yyyy-MM-dd" ou similar
             String[] partes = dataNascimento.split("-");
             int anoNasc = Integer.parseInt(partes[0]);
             int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
